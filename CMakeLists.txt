@@ -33,6 +33,8 @@ add_executable(physics main.cpp
         RegularPolygon.cpp
         RegularPolygon.h
         Colors.h
+        Rectangle.cpp
+        Rectangle.h
 )
 
 target_link_libraries(physics PRIVATE SDL2::SDL2main SDL2::SDL2 glad::glad)

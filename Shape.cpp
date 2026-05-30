@@ -37,7 +37,7 @@ Shape::Shape(const std::vector<Triangle> &triangles, unsigned int program)
 
 }
 
-Shape::Shape(const std::vector<Triangle> &triangles, Color color, unsigned int program)
+Shape::Shape(const std::vector<Triangle> &triangles, const Color& color, unsigned int program)
     : Shape(triangles,program) {
     this->color = color;
 }

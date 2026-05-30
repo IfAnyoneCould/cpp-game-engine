@@ -4,6 +4,7 @@
 #include "Shader.h"
 #include "RegularPolygon.h"
 #include "MovementController.h"
+#include "Rectangle.h"
 
 int main(int argc, char* argv[]) {
 
@@ -35,7 +36,7 @@ int main(int argc, char* argv[]) {
 
     RegularPolygon shape(200.0f,6,Colors::BLUE,program);
     MovementController controller{500};
-    RegularPolygon rect(200.0f,4,program);
+    Rectangle rect(100,500,program);
 
     // -----------------------------------------------------------------------------
     // sdl input stuff
@@ -76,7 +77,7 @@ int main(int argc, char* argv[]) {
 
         controller.update(deltaTime,keys);
         shape.setOffset(controller.getPosition());
-        rect.draw();
+        rect.drawWireFrame();
         shape.draw();
 
         //-----------------------------------------------------------------------------

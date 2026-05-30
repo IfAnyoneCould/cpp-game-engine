@@ -24,7 +24,7 @@ public:
         glDeleteBuffers(1,&buffer.VBO);
     }
     Shape(const std::vector<Triangle>& triangles, unsigned int program);
-    Shape(const std::vector<Triangle>& triangles, Color color, unsigned int program);
+    Shape(const std::vector<Triangle>& triangles, const Color& color, unsigned int program);
 
     [[nodiscard]] virtual std::vector<Vector2> getVertices() const;
     [[nodiscard]] Vector2 worldCenter() const;

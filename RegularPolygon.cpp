@@ -19,7 +19,7 @@ RegularPolygon::RegularPolygon(float radius, int sides, unsigned int program)
     genBuffer();
 }
 
-RegularPolygon::RegularPolygon(float radius, int sides, Color color, unsigned int program)
+RegularPolygon::RegularPolygon(float radius, int sides, const Color& color, unsigned int program)
     : RegularPolygon(radius, sides, program) {
     this->color = color;
 }
