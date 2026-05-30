@@ -1,5 +1,5 @@
 #include "Shape.h"
-#include <unordered_set>
+#include <iostream>
 
 std::vector<Vector2> Shape::getVertices() const {
     std::vector<Vector2> vertices ;
@@ -107,4 +107,28 @@ void Shape::addLocation(const char* loc) {
 void Shape::setUniforms() const {
     glUniform2f(locations.at("offset"),offset.x / Constants::WORLD_WIDTH,offset.y / Constants::WORLD_HEIGHT);
     glUniform3f(locations.at("color"),color.r,color.g,color.b);
+}
+
+bool Shape::intersects(const Shape &other) const {
+
+    float centDist = worldCenter().distanceToSquared(other.worldCenter());
+    float radDist = (boundingCircleRadius + other.boundingCircleRadius) * (boundingCircleRadius + other.boundingCircleRadius);
+
+    if (centDist > radDist) {return false;}
+
+    for (const auto& t1 : triangles) {
+        Triangle t1Offset = t1.translated(offset);
+        for (const auto& t2 : other.triangles) {
+            if (t1Offset.intersects(t2.translated(other.offset))) {return true;}
+        }
+    }
+
+    return false;
+}
+
+bool Shape::contains(const Vector2 &point) const {
+    for (const auto& t : triangles) {
+        if (t.contains(point)) return true;
+    }
+    return false;
 }

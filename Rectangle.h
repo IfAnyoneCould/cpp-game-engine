@@ -13,5 +13,6 @@ public:
     [[nodiscard]] float getWidth() const {return width;}
     [[nodiscard]] float getHeight() const {return height;}
     [[nodiscard]] Vector2 localCenter() const override;
+    [[nodiscard]] bool contains(const Vector2& other) const;
 
 };

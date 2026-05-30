@@ -77,6 +77,13 @@ int main(int argc, char* argv[]) {
 
         controller.update(deltaTime,keys);
         shape.setOffset(controller.getPosition());
+
+        if (rect.intersects(shape)) {
+            shape.setColor(Colors::GREEN);
+        } else {
+            shape.setColor(Colors::BLUE);
+        }
+
         rect.drawWireFrame();
         shape.draw();
 

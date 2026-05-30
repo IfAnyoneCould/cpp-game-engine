@@ -37,4 +37,10 @@ struct Vector2 {
     float distanceTo(const Vector2& other) const {return (*this-other).magnitude();}
     float distanceToSquared(const Vector2& other) const {return (*this-other).magnitudeSquared();}
 
+    //static stuff
+    static float cross(const Vector2& a, const Vector2& b) {return a.x * b.y - a.y * b.x;}
+    static float dot(const Vector2& a, const Vector2& b) {return a.x * b.x + a.y * b.y;}
+    static float orient(const Vector2& a, const Vector2& b, const Vector2& c) {return cross(b-a,c-a);}
+
+
 };

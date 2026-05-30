@@ -16,3 +16,8 @@ Rectangle::Rectangle(float width, float height, const Color& color, unsigned int
 Vector2 Rectangle::localCenter() const {
     return {width/2,height/2};
 }
+
+bool Rectangle::contains(const Vector2 &other) const {
+    const Vector2 check = other-offset;
+    return ( 0 <= check.x && check.x <= width) && (0 <= check.y && check.y <= height);
+}

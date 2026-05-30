@@ -31,8 +31,8 @@ public:
     [[nodiscard]] virtual Vector2 localCenter() const;
     [[nodiscard]] Vector2 getOffset() const {return offset;};
     [[nodiscard]] Vector2 getVelocity() const {return velocity;};
-    [[nodiscard]] bool contains(const Vector2& point);
-    [[nodiscard]] bool contains(const Shape& other);
+    [[nodiscard]] virtual bool contains(const Vector2& point) const;
+    [[nodiscard]] bool intersects(const Shape& other) const;
     [[nodiscard]] virtual std::vector<unsigned int> getIndices() const;
     [[nodiscard]] Color getColor() const {return color;}
 
