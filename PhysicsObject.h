@@ -1,29 +1,24 @@
 #pragma once
-#include <SDL_render.h>
 #include <vector>
 #include "Vector2.h"
 
-class Particle {
+class PhysicsObject {
     Vector2 pos = Vector2{};
     Vector2 velocity = Vector2{};
 
     float mass = 1;
 
-    std::vector<Vector2> forces;
     Vector2 netForce = Vector2{};
 
 public:
-    explicit Particle(Vector2 pos);
+    explicit PhysicsObject(float mass) {this->mass = mass;};
 
     void setForces(const std::vector<Vector2>& forces);
-    void addForce(const Vector2& force) {forces.push_back(force); netForce+=force;}
-    void removeForce(int index) {netForce-=forces[index]; forces.erase(forces.begin() + index);}
-    void calcNetForce() {netForce = Vector2{}; for (const auto& f : forces) {netForce += f;}}
-
+    void addForce(const Vector2& force) {netForce+=force;}
+    void removeForce(const Vector2& force) {netForce-=force;}
 
     // main functions
     void update(double deltaTime);
-    void draw(SDL_Renderer* renderer) const;
 
     //get and set
     float getMass() const {return mass;};

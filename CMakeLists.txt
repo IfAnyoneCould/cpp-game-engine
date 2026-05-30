@@ -12,11 +12,9 @@ find_package(SDL2 REQUIRED)
 find_package(glad CONFIG REQUIRED)
 
 add_executable(physics main.cpp
-        Grid.h
-        Grid.cpp
         Unit.h
-        Particle.h
-        Particle.cpp
+        PhysicsObject.h
+        PhysicsObject.cpp
         Vector2.h
         Forces.h
         Vectors.h
