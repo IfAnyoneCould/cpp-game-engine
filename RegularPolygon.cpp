@@ -53,8 +53,7 @@ std::vector<unsigned int> RegularPolygon::getIndices() const {
 
 void RegularPolygon::draw() const {
     glUseProgram(program);
-    setUniformPosition();
-    setUnifromColor();
+    setUniforms();
     glBindVertexArray(buffer.VAO);
     glDrawElements(GL_TRIANGLES,sides * 3,GL_UNSIGNED_INT,0);
 }

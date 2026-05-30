@@ -1,5 +1,7 @@
 #pragma once
 #include <vector>
+#include <unordered_map>
+#include <string>
 #include "Vector2.h"
 #include "Triangle.h"
 #include "Vertex.h"
@@ -12,8 +14,9 @@ protected:
     Vector2 velocity = Vector2{};
     BufferObject buffer;
     float boundingCircleRadius;
-    unsigned int program;
     Color color = Colors::BLACK;
+    unsigned int program;
+    std::unordered_map<std::string,unsigned int> locations;
 
 public:
     virtual ~Shape() {
@@ -38,10 +41,10 @@ public:
     void setOffset(const Vector2& pos);
     void addOffset(const Vector2& pos);
     void setColor(const Color& color);
+    void addLocation(const char* loc);
 
     void update(double deltaTime);
-    void setUniformPosition() const;
-    void setUnifromColor() const;
+    void setUniforms() const;
     virtual void draw() const;
     virtual void genBuffer();
     void drawWireFrame() const;

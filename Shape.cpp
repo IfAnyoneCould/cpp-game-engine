@@ -20,6 +20,7 @@ Vector2 Shape::localCenter() const {
     return center/=triangles.size();
 }
 
+
 Shape::Shape(const std::vector<Triangle> &triangles, unsigned int program)
     : triangles(triangles), buffer({0,0}), boundingCircleRadius(0), program(program){
 
@@ -30,6 +31,10 @@ Shape::Shape(const std::vector<Triangle> &triangles, unsigned int program)
         float distance = center.distanceTo(v);
         if (distance > boundingCircleRadius) boundingCircleRadius = distance;
     }
+
+    addLocation("color");
+    addLocation("offset");
+
 }
 
 Shape::Shape(const std::vector<Triangle> &triangles, Color color, unsigned int program)
@@ -68,8 +73,7 @@ std::vector<unsigned int> Shape::getIndices() const {
 
 void Shape::draw() const {
     glUseProgram(program);
-    setUniformPosition();
-    setUnifromColor();
+    setUniforms();
     glBindVertexArray(buffer.VAO);
     glDrawArrays(GL_TRIANGLES,0,triangles.size() * 3);
 }
@@ -92,16 +96,15 @@ void Shape::addOffset(const Vector2 &pos) {
     this->offset += pos;
 }
 
-void Shape::setUniformPosition() const {
-    int loc = glGetUniformLocation(program,"offset");
-    glUniform2f(loc,offset.x / Constants::WORLD_WIDTH,offset.y / Constants::WORLD_HEIGHT);
-}
-
 void Shape::setColor(const Color& color) {
     this->color = color;
 }
 
-void Shape::setUnifromColor() const {
-    int loc = glGetUniformLocation(program, "color");
-    glUniform3f(loc,color.r,color.g,color.b);
+void Shape::addLocation(const char* loc) {
+    locations[loc] = glGetUniformLocation(program,loc);
+}
+
+void Shape::setUniforms() const {
+    glUniform2f(locations.at("offset"),offset.x / Constants::WORLD_WIDTH,offset.y / Constants::WORLD_HEIGHT);
+    glUniform3f(locations.at("color"),color.r,color.g,color.b);
 }
