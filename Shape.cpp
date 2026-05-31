@@ -22,10 +22,9 @@ Vector2 Shape::localCenter() const {
 
 
 Shape::Shape(const std::vector<Triangle> &triangles, unsigned int program)
-    : triangles(triangles), buffer({0,0}), boundingCircleRadius(0), program(program){
+    : triangles(triangles), vertices(getVertices()), boundingCircleRadius(0), program(program){
 
     const Vector2 center = localCenter();
-    const std::vector<Vector2> vertices = getVertices();
 
     for (const auto& v : vertices) {
         float distance = center.distanceTo(v);
@@ -46,20 +45,7 @@ Vector2 Shape::worldCenter() const {
     return localCenter()+offset;
 }
 
-void Shape::addVelocity(const Vector2 &vel) {
-    this->velocity+=vel;
-}
-
-void Shape::setVelocity(const Vector2 &vel) {
-    this->velocity = vel;
-}
-
-void Shape::update(double deltaTime) {
-    offset+=velocity * deltaTime;
-}
-
 std::vector<unsigned int> Shape::getIndices() const {
-    std::vector<Vector2> vertices = getVertices();
     std::vector<unsigned int> indices;
 
     for (int i = 0; i < triangles.size(); i++) {
@@ -79,7 +65,7 @@ void Shape::draw() const {
 }
 
 void Shape::genBuffer() {
-    this->buffer = Vertex::getBufferObjects(getVertices());
+    this->buffer = Vertex::getBufferObjects(vertices);
 }
 
 void Shape::drawWireFrame() const {
@@ -131,4 +117,58 @@ bool Shape::contains(const Vector2 &point) const {
         if (t.contains(point)) return true;
     }
     return false;
+}
+
+std::vector<Vector2> Shape::getNormals() const {
+    std::vector<Vector2> axis;
+
+    for (int i = 0; i < vertices.size(); i++) {
+        Vector2 p1 = vertices[i];
+        Vector2 p2 = vertices[i == vertices.size() ? 0 : i + 1];
+        axis.push_back((p1-p2).perp().normalized());
+    }
+    
+    return axis;
+}
+
+Vector2 Shape::project(const Vector2 &axis) const {
+    float min = axis.dot(vertices[0]);
+    float max = min;
+
+    for (int i = 1; i < vertices.size(); i++) {
+        float p = axis.dot(vertices[i]);
+        if (p < min) {
+            min = p;
+        } else if (p > max) {
+            max = p;
+        }
+    }
+    return {min,max};
+}
+
+Collision Shape::intersectsSAT(const Shape &other) const {
+    std::vector<Vector2> axes[2] = {getNormals(), other.getNormals()};
+
+    float overlap = 99999999999;
+    Vector2 smallest;
+
+    for (int j = 0; j < 2; j++) {
+        for (int i = 0; i < axes[j].size(); i++) {
+            Vector2 p1 = project(axes[j][i]);
+            Vector2 p2 = other.project(axes[j][i]);
+
+            float o = Geometry::getOverlap(p1.x,p1.y,p2.x,p2.y);
+
+            if (o < 0) {
+                return {};
+            }
+            if (o < overlap) {
+                overlap = o;
+                smallest = axes[j][i];
+            }
+        }
+    }
+    Vector2 direction = worldCenter() - other.worldCenter();
+    if (Vector2::dot(direction, smallest) < 0) smallest = -smallest;
+    return Collision(true, smallest, overlap);
 }

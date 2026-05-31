@@ -34,6 +34,10 @@ add_executable(physics main.cpp
         Rectangle.cpp
         Rectangle.h
         Geometry.h
+        Physics.cpp
+        Physics.h
+        GameObject.cpp
+        GameObject.h
 )
 
 target_link_libraries(physics PRIVATE SDL2::SDL2main SDL2::SDL2 glad::glad)

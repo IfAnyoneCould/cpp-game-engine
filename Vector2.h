@@ -17,6 +17,7 @@ struct Vector2 {
 
     Vector2 operator+(const Vector2& other) const {Vector2 r = *this; r+=other; return r;}
     Vector2 operator-(const Vector2& other) const {Vector2 r = *this; r-=other; return r;}
+    Vector2 operator-() const {return {-x,-y};}
     Vector2 operator*(float other) const {Vector2 r = *this; r*=other; return r;}
     Vector2 operator/(float other) const {Vector2 r = *this; r/=other; return r;}
 
@@ -36,6 +37,7 @@ struct Vector2 {
     static Vector2 fromDegreesAndMagnitude(float angle, float magnitude) {return {magnitude * cosf(angle * Constants::PI / 180.0f), magnitude * sinf(angle * Constants::PI / 180.0f)};}
     float distanceTo(const Vector2& other) const {return (*this-other).magnitude();}
     float distanceToSquared(const Vector2& other) const {return (*this-other).magnitudeSquared();}
+    Vector2 perp() const {return {-y,x};}
 
     //static stuff
     static float cross(const Vector2& a, const Vector2& b) {return a.x * b.y - a.y * b.x;}

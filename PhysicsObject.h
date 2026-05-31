@@ -22,9 +22,9 @@ public:
 
     //get and set
     float getMass() const {return mass;};
-    const Vector2& getPosition() const {return pos;}
-    const Vector2& getVelocity() const {return velocity;}
-    const Vector2& getNetForce() const {return netForce;}
+    Vector2 getPosition() const {return pos;}
+    Vector2 getVelocity() const {return velocity;}
+    Vector2 getNetForce() const {return netForce;}
     void setPosition(const Vector2& other) {pos = other;}
     void setVelocity(const Vector2& other) { velocity = other;}
     void addVelocity(const Vector2& other) { velocity += other;}

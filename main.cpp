@@ -5,6 +5,7 @@
 #include "RegularPolygon.h"
 #include "MovementController.h"
 #include "Rectangle.h"
+#include "GameObject.h"
 
 int main(int argc, char* argv[]) {
 
