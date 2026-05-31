@@ -1,11 +1,12 @@
 #include "Physics.h"
+#include <iostream>
 
 void Physics::collision(GameObject& a, GameObject& b) {
     Collision collision = a.getShape().intersectsSAT(b.getShape());
 
     if (collision.collided) {
-        float invMassA = a.getShape().isFixed() ? 0 : 1 / a.getBody().getMass();
-        float invMassB = b.getShape().isFixed() ? 0 : 1 / b.getBody().getMass();
+        float invMassA = a.isFixed() ? 0 : 1 / a.getBody().getMass();
+        float invMassB = b.isFixed() ? 0 : 1 / b.getBody().getMass();
 
         float restitution = 0.8f;
         Vector2 relVel = a.getVelocity() - b.getVelocity();
@@ -17,13 +18,15 @@ void Physics::collision(GameObject& a, GameObject& b) {
 
         Vector2 impulse = collision.normal * j;
 
-        if (!a.getShape().isFixed()) a.setVelocity(a.getVelocity() + impulse * invMassA);
-        if (!b.getShape().isFixed()) b.setVelocity(b.getVelocity() - impulse * invMassB);
+        if (!a.isFixed()) a.setVelocity(a.getVelocity() + impulse * invMassA);
+        if (!b.isFixed()) b.setVelocity(b.getVelocity() - impulse * invMassB);
 
+        /*
         const float percent = 0.2f;
         Vector2 correction = collision.normal * (collision.depth / (invMassA + invMassB)) * percent;
-        if (!a.getShape().isFixed()) a.setPosition(a.getPosition() + correction * invMassA);
-        if (!b.getShape().isFixed()) b.setPosition(b.getPosition() - correction * invMassB);
+        if (!a.isFixed()) a.setPosition(a.getPosition() + correction * invMassA);
+        if (!b.isFixed()) b.setPosition(b.getPosition() - correction * invMassB);
+        */
     }
 
 }

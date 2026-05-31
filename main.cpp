@@ -6,6 +6,7 @@
 #include "MovementController.h"
 #include "Rectangle.h"
 #include "GameObject.h"
+#include "Physics.h"
 
 int main(int argc, char* argv[]) {
 
@@ -37,7 +38,11 @@ int main(int argc, char* argv[]) {
 
     RegularPolygon shape(200.0f,6,Colors::BLUE,program);
     MovementController controller{500};
+    GameObject a(&shape,100);
+
     Rectangle rect(100,500,program);
+    GameObject b(&rect,50);
+    b.setFixed(true);
 
     // -----------------------------------------------------------------------------
     // sdl input stuff
@@ -76,14 +81,13 @@ int main(int argc, char* argv[]) {
         //do stuff here
         //-----------------------------------------------------------------------------
 
-        controller.update(deltaTime,keys);
-        shape.setOffset(controller.getPosition());
+        controller.update(keys);
 
-        if (rect.intersects(shape)) {
-            shape.setColor(Colors::GREEN);
-        } else {
-            shape.setColor(Colors::BLUE);
-        }
+        a.setVelocity(controller.getVelocity());
+
+        Physics::collision(a,b);
+
+        a.update(deltaTime);
 
         rect.drawWireFrame();
         shape.draw();

@@ -5,6 +5,7 @@
 class PhysicsObject {
     Vector2 pos = Vector2{};
     Vector2 velocity = Vector2{};
+    bool fixed = false;
 
     float mass = 1;
 
@@ -25,7 +26,9 @@ public:
     Vector2 getPosition() const {return pos;}
     Vector2 getVelocity() const {return velocity;}
     Vector2 getNetForce() const {return netForce;}
+    bool isFixed() const {return fixed;}
     void setPosition(const Vector2& other) {pos = other;}
     void setVelocity(const Vector2& other) { velocity = other;}
     void addVelocity(const Vector2& other) { velocity += other;}
+    void setFixed(bool fix) {fixed = fix;}
 };

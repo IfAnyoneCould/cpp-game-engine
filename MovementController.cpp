@@ -2,7 +2,7 @@
 #include "Vectors.h"
 #include <SDl2/SDL.h>
 
-void MovementController::update(double deltaTime,const Uint8* keys) {
+void MovementController::update(const Uint8* keys) {
     velocity = Vectors::ZERO;
     if (keys[SDL_SCANCODE_LEFT]) velocity += Vectors::LEFT;
     if (keys[SDL_SCANCODE_RIGHT]) velocity += Vectors::RIGHT;
@@ -10,6 +10,4 @@ void MovementController::update(double deltaTime,const Uint8* keys) {
     if (keys[SDL_SCANCODE_DOWN]) velocity += Vectors::DOWN;
     velocity = velocity.normalized();
     velocity *= MAX_SPEED;
-
-    pos += velocity * deltaTime;
 }

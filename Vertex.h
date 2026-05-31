@@ -5,7 +5,6 @@
 
 struct BufferObject {
     unsigned int VAO, VBO, EBO;
-    BufferObject() : VAO(0), VBO(0), EBO(0) {}
 };
 
 class Vertex {

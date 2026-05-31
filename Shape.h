@@ -27,7 +27,6 @@ protected:
     Color color = Colors::BLACK;
     unsigned int program;
     std::unordered_map<std::string,unsigned int> locations;
-    bool fixed = false;
 
 public:
     virtual ~Shape() {
@@ -45,7 +44,6 @@ public:
     [[nodiscard]] bool intersects(const Shape& other) const;
     virtual std::vector<unsigned int> getIndices() const;
     Color getColor() const {return color;}
-    bool isFixed() const {return fixed;}
     std::vector<Vector2> getNormals() const;
     Collision intersectsSAT(const Shape& other) const;
     Vector2 project(const Vector2& axis) const;
