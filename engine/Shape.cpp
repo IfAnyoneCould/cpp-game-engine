@@ -1,10 +1,10 @@
 #include "Shape.h"
 #include <iostream>
 #include <map>
-#include "geometry.h"
+#include "Geometry.h"
 
 std::vector<Vector2> Shape::getVertices() const {
-    std::vector<Vector2> vertices ;
+    std::vector<Vector2> vertices;
     for (const auto& t : triangles) {
         vertices.push_back(t.getA());
         vertices.push_back(t.getB());
@@ -164,7 +164,7 @@ Collision Shape::intersectsSAT(const Shape &other) const {
 
     if (!intersectsBoundingCircle(other)) return {false,{0,0},0};
 
-    std::vector<Vector2> axes[2] = {nonParallelNormals, other.nonParallelNormals};
+    const std::vector<Vector2> axes[2] = {nonParallelNormals, other.nonParallelNormals};
 
     float overlap = 99999999999;
     Vector2 smallest;

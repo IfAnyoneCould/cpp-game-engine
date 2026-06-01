@@ -11,33 +11,36 @@ set(CMAKE_TOOLCHAIN_FILE "C:/Users/JonahW/vcpkg/scripts/buildsystems/vcpkg.cmake
 find_package(SDL2 REQUIRED)
 find_package(glad CONFIG REQUIRED)
 
-add_executable(physics main.cpp
-        Unit.h
-        PhysicsObject.h
-        PhysicsObject.cpp
-        Vector2.h
-        Forces.h
-        Vectors.h
-        MovementController.h
-        MovementController.cpp
-        Triangle.h
-        Shape.h
-        Constants.h
-        Shader.h
-        Shader.cpp
-        Vertex.h
-        Vertex.cpp
-        Shape.cpp
-        RegularPolygon.cpp
-        RegularPolygon.h
-        Colors.h
-        Rectangle.cpp
-        Rectangle.h
-        Geometry.h
-        Physics.cpp
-        Physics.h
-        GameObject.cpp
-        GameObject.h
+add_executable(physics game/main.cpp
+        engine/Unit.h
+        engine/PhysicsObject.h
+        engine/PhysicsObject.cpp
+        engine/Vector2.h
+        engine/Forces.h
+        engine/Vectors.h
+        engine/MovementController.h
+        engine/MovementController.cpp
+        engine/Triangle.h
+        engine/Shape.h
+        engine/Constants.h
+        engine/Shader.h
+        engine/Shader.cpp
+        engine/Vertex.h
+        engine/Vertex.cpp
+        engine/Shape.cpp
+        engine/RegularPolygon.cpp
+        engine/RegularPolygon.h
+        engine/Colors.h
+        engine/Rectangle.cpp
+        engine/Rectangle.h
+        engine/Geometry.h
+        engine/Physics.cpp
+        engine/Physics.h
+        engine/GameObject.cpp
+        engine/GameObject.h
+        engine/Game.h
+        engine/Engine.cpp
+        engine/Engine.h
 )
 
 target_link_libraries(physics PRIVATE SDL2::SDL2main SDL2::SDL2 glad::glad)

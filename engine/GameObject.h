@@ -11,6 +11,7 @@ class GameObject {
 public:
     GameObject(Shape* shape, PhysicsObject* body) : shape(shape), body(body){}
     GameObject(Shape* shape, float mass) : shape(shape), body(std::make_unique<PhysicsObject>(mass)) {}
+    GameObject(Shape* shape) : shape(shape), body(std::make_unique<PhysicsObject>(1)) {body->setFixed(true);}
 
     void setPosition(const Vector2& pos) const;
     void setVelocity(const Vector2& vel) const;

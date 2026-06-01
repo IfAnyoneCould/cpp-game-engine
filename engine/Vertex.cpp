@@ -1,5 +1,6 @@
 #include "Vertex.h"
 #include "Constants.h"
+#include <glad/glad.h>
 
 std::vector<float> Vertex::getVertexArray(const std::vector<Vector2>& vec2Array) {
     std::vector<float> array = {};

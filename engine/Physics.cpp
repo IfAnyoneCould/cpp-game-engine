@@ -1,5 +1,4 @@
 #include "Physics.h"
-#include <iostream>
 
 void Physics::collision(GameObject& a, GameObject& b) {
     Collision collision = a.getShape().intersectsSAT(b.getShape());

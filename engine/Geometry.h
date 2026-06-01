@@ -1,6 +1,7 @@
 #pragma once
 #include "Vector2.h"
 #include "Vertex.h"
+#include <glad/glad.h>
 
 namespace Geometry {
     inline bool linesIntersect(const Vector2& a, const Vector2& b, const Vector2& c, const Vector2& d) {
