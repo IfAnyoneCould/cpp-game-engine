@@ -12,8 +12,10 @@ struct Vector2 {
     Vector2& operator-=(const Vector2& other) {x -= other.x; y -= other.y; return *this;}
     Vector2& operator*=(float other) {x *= other; y *= other; return *this;}
     Vector2& operator/=(float other) {x /= other; y /= other; return *this;}
+
     bool operator==(const Vector2& other) const {return x==other.x && y==other.y;}
     bool operator!=(const Vector2& other) const {return !(*this==other);}
+    bool operator<(const Vector2& other) const {if (x != other.x) {return x < other.x;} return y < other.y;}
 
     Vector2 operator+(const Vector2& other) const {Vector2 r = *this; r+=other; return r;}
     Vector2 operator-(const Vector2& other) const {Vector2 r = *this; r-=other; return r;}

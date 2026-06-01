@@ -21,12 +21,10 @@ void Physics::collision(GameObject& a, GameObject& b) {
         if (!a.isFixed()) a.setVelocity(a.getVelocity() + impulse * invMassA);
         if (!b.isFixed()) b.setVelocity(b.getVelocity() - impulse * invMassB);
 
-        /*
         const float percent = 0.2f;
         Vector2 correction = collision.normal * (collision.depth / (invMassA + invMassB)) * percent;
         if (!a.isFixed()) a.setPosition(a.getPosition() + correction * invMassA);
         if (!b.isFixed()) b.setPosition(b.getPosition() - correction * invMassB);
-        */
     }
 
 }

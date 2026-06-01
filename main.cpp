@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
         {"shaders/fragment.glsl",GL_FRAGMENT_SHADER}});
 
 
-    RegularPolygon shape(200.0f,6,Colors::BLUE,program);
+    RegularPolygon shape(200.0f,6,program);
     MovementController controller{500};
     GameObject a(&shape,100);
 
@@ -85,12 +85,14 @@ int main(int argc, char* argv[]) {
 
         a.setVelocity(controller.getVelocity());
 
+        //a.getShape().drawNormals();
+
         Physics::collision(a,b);
 
         a.update(deltaTime);
 
         rect.drawWireFrame();
-        shape.draw();
+        a.getShape().drawWireFrame();
 
         //-----------------------------------------------------------------------------
         SDL_GL_SwapWindow(window);

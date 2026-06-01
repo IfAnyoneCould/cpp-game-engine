@@ -21,6 +21,8 @@ class Shape {
 protected:
     std::vector<Triangle> triangles;
     std::vector<Vector2> vertices;
+    std::vector<Vector2> normals;
+    std::vector<Vector2> nonParallelNormals;
     Vector2 offset = Vector2{};
     BufferObject buffer;
     float boundingCircleRadius;
@@ -40,13 +42,15 @@ public:
     Vector2 worldCenter() const;
     virtual Vector2 localCenter() const;
     Vector2 getOffset() const {return offset;};
-    [[nodiscard]] virtual bool contains(const Vector2& point) const;
-    [[nodiscard]] bool intersects(const Shape& other) const;
     virtual std::vector<unsigned int> getIndices() const;
     Color getColor() const {return color;}
     std::vector<Vector2> getNormals() const;
-    Collision intersectsSAT(const Shape& other) const;
     Vector2 project(const Vector2& axis) const;
+
+    [[nodiscard]] virtual bool contains(const Vector2& point) const;
+    [[nodiscard]] bool intersectsBoundingCircle(const Shape& other) const;
+    [[nodiscard]] bool intersects(const Shape& other) const;
+    [[nodiscard]] Collision intersectsSAT(const Shape& other) const;
 
     void setOffset(const Vector2& pos);
     void addOffset(const Vector2& pos);
@@ -57,6 +61,7 @@ public:
     virtual void draw() const;
     virtual void genBuffer();
     void drawWireFrame() const;
+    void drawNormals() const;
 
 
 };

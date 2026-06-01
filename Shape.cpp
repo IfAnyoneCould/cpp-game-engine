@@ -1,5 +1,7 @@
 #include "Shape.h"
 #include <iostream>
+#include <map>
+#include "geometry.h"
 
 std::vector<Vector2> Shape::getVertices() const {
     std::vector<Vector2> vertices ;
@@ -22,7 +24,8 @@ Vector2 Shape::localCenter() const {
 
 
 Shape::Shape(const std::vector<Triangle> &triangles, unsigned int program)
-    : triangles(triangles), vertices(getVertices()), boundingCircleRadius(0), program(program){
+    : triangles(triangles), vertices(getVertices()), normals(getNormals()), nonParallelNormals(Geometry::removeParallelVectors(normals)),
+      boundingCircleRadius(0), program(program){
 
     const Vector2 center = localCenter();
 
@@ -97,10 +100,7 @@ void Shape::setUniforms() const {
 
 bool Shape::intersects(const Shape &other) const {
 
-    float centDist = worldCenter().distanceToSquared(other.worldCenter());
-    float radDist = (boundingCircleRadius + other.boundingCircleRadius) * (boundingCircleRadius + other.boundingCircleRadius);
-
-    if (centDist > radDist) {return false;}
+    if (!intersectsBoundingCircle(other)) return false;
 
     for (const auto& t1 : triangles) {
         Triangle t1Offset = t1.translated(offset);
@@ -120,23 +120,37 @@ bool Shape::contains(const Vector2 &point) const {
 }
 
 std::vector<Vector2> Shape::getNormals() const {
+
+    std::map<std::pair<Vector2,Vector2>,int> edgeCount;
+
+    for (const auto& t : triangles) {
+        auto addEdge = [&](Vector2 a, Vector2 b) {
+            if (b < a) std::swap(a,b);
+            edgeCount[{a,b}]++;
+        };
+        addEdge(t.getA(),t.getB());
+        addEdge(t.getB(),t.getC());
+        addEdge(t.getC(),t.getA());
+    }
+
     std::vector<Vector2> axis;
 
-    for (int i = 0; i < vertices.size(); i++) {
-        Vector2 p1 = vertices[i];
-        Vector2 p2 = vertices[i == vertices.size() ? 0 : i + 1];
-        axis.push_back((p1-p2).perp().normalized());
+    for (auto& [edge,count] : edgeCount) {
+        if (count == 1) {
+            Vector2 e = edge.second - edge.first;
+            axis.push_back(e.perp().normalized());
+        }
     }
-    
+
     return axis;
 }
 
 Vector2 Shape::project(const Vector2 &axis) const {
-    float min = axis.dot(vertices[0]);
+    float min = axis.dot(vertices[0] + offset);
     float max = min;
 
     for (int i = 1; i < vertices.size(); i++) {
-        float p = axis.dot(vertices[i]);
+        float p = axis.dot(vertices[i] + offset);
         if (p < min) {
             min = p;
         } else if (p > max) {
@@ -147,7 +161,10 @@ Vector2 Shape::project(const Vector2 &axis) const {
 }
 
 Collision Shape::intersectsSAT(const Shape &other) const {
-    std::vector<Vector2> axes[2] = {getNormals(), other.getNormals()};
+
+    if (!intersectsBoundingCircle(other)) return {false,{0,0},0};
+
+    std::vector<Vector2> axes[2] = {nonParallelNormals, other.nonParallelNormals};
 
     float overlap = 99999999999;
     Vector2 smallest;
@@ -170,5 +187,17 @@ Collision Shape::intersectsSAT(const Shape &other) const {
     }
     Vector2 direction = worldCenter() - other.worldCenter();
     if (Vector2::dot(direction, smallest) < 0) smallest = -smallest;
-    return Collision(true, smallest, overlap);
+    return {true, smallest, overlap};
+}
+
+void Shape::drawNormals() const {
+    for (const auto& v : normals) {
+        Geometry::drawLine(localCenter(),localCenter() + v * 50.0f,program);
+    }
+}
+
+bool Shape::intersectsBoundingCircle(const Shape &other) const {
+    return worldCenter().distanceToSquared(other.worldCenter()) <=
+       (boundingCircleRadius + other.boundingCircleRadius) *
+       (boundingCircleRadius + other.boundingCircleRadius);
 }
