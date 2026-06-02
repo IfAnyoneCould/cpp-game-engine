@@ -13,7 +13,7 @@ class Shader {
 public:
 
     Shader() : id(0) {};
-    Shader(Shader&& other)  noexcept : id(other.id) {};
+    Shader(Shader&& other)  noexcept : id(other.id) {other.id = 0;};
     Shader(std::initializer_list<std::pair<std::string,GLenum>> data) : id(getProgram(data)){};
     Shader(const std::vector<unsigned int>& data) : id(getProgram(data)){}
     ~Shader() {glDeleteProgram(id);}

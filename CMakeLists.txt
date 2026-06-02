@@ -49,6 +49,8 @@ add_executable(physics game/main.cpp
         engine/controllers/PlatformerController.h
         engine/WorldObject.cpp
         engine/WorldObject.h
+        engine/Texture.cpp
+        engine/Texture.h
 )
 target_include_directories(${PROJECT_NAME} PRIVATE
         C:/Users/JonahW/vcpkg/installed/x64-mingw-dynamic/include
