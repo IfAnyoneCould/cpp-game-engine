@@ -9,5 +9,5 @@ namespace Vectors {
     inline constexpr Vector2 DOWN = {0,-1};
     inline constexpr Vector2 ZERO = {};
     inline constexpr Vector2 WORLD_CENTER = {Constants::WORLD_WIDTH/2,Constants::WORLD_HEIGHT/2};
-    inline constexpr Vector2 GRAVITY = {0.0f,-9.8f};
+    inline constexpr Vector2 GRAVITY = {0.0f,-200.0f};
 }

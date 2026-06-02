@@ -4,29 +4,30 @@ void GameObject::setPosition(const Vector2& pos) const {
     body->setPosition(pos);
 }
 
-void GameObject::setVelocity(const Vector2 &vel) const {
-    body->setVelocity(vel);
+void GameObject::setPhysicsVelocity(const Vector2 &vel) const {
+    body->setPhysicsVelocity(vel);
 }
 
 void GameObject::applyForces(double deltaTime) const {
     body->applyForces(deltaTime);
 }
 
-void GameObject::applyVelocity(double deltaTime) const {
-
+void GameObject::updateControllers(double deltaTime) const {
     for (const auto& c : controllers) {
         c->update(deltaTime);
         if (c->overridesVelocity()) {
-            body->setVelocity(c->getVelocity());
+            body->setControllerVelocity(c->getVelocity());
         } else {
-            body->addVelocity(c->getVelocity());
+            body->addControllerVelocity(c->getVelocity());
         }
     }
+}
 
+void GameObject::applyVelocity(double deltaTime) const {
     body->applyVelocity(deltaTime);
     shape->setOffset(body->getPosition());
 }
 
-void GameObject::addVelocity(const Vector2& vel) const {
-    body->addVelocity(vel);
+void GameObject::addPhysicsVelocity(const Vector2& vel) const {
+    body->addPhysicsVelocity(vel);
 }

@@ -30,8 +30,8 @@ void start() {
 
 void update(double deltaTime) {
 
+    a->updateControllers(deltaTime);
     Physics::collision(*a,*b);
-
     a->applyVelocity(deltaTime);
 
     a->getShape().drawNormals();

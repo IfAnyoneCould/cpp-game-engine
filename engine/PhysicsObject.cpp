@@ -2,12 +2,13 @@
 #include "Vectors.h"
 
 void PhysicsObject::applyForces(double deltaTime) {
-    velocity+=netForce * invMass * deltaTime;
+    physicsVelocity+=netForce * invMass * deltaTime;
     netForce = Vectors::ZERO;
 }
 
 void PhysicsObject::applyVelocity(double deltaTime) {
-    pos+=velocity * deltaTime;
+    physicsVelocity += Vectors::GRAVITY * deltaTime;
+    pos+=( physicsVelocity + controllerVelocity) * deltaTime;
 }
 
 void PhysicsObject::setForces(const std::vector<Vector2>& otherForces) {

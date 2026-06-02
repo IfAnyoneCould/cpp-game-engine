@@ -1,4 +1,5 @@
 #include "Physics.h"
+#include <iostream>
 
 void Physics::collision(GameObject& a, GameObject& b) {
     Collision collision = a.getShape().intersectsSAT(b.getShape());
@@ -8,7 +9,7 @@ void Physics::collision(GameObject& a, GameObject& b) {
         float invMassB = b.isFixed() ? 0 : b.getBody().getInvMass();
 
         float restitution = 0.8f;
-        Vector2 relVel = a.getVelocity() - b.getVelocity();
+        Vector2 relVel = a.getTotalVelocity() - b.getTotalVelocity();
         float normalVel = Vector2::dot(relVel,collision.normal);
 
         if (normalVel > 0) return;
@@ -17,28 +18,30 @@ void Physics::collision(GameObject& a, GameObject& b) {
 
         Vector2 impulse = collision.normal * j;
 
-        if (!a.isFixed() && !a.isKinematic()) a.setVelocity(a.getVelocity() + impulse * invMassA);
-        if (!b.isFixed() && !a.isKinematic()) b.setVelocity(b.getVelocity() - impulse * invMassB);
+        if (!a.isFixed() && !a.isKinematic()) a.setPhysicsVelocity(a.getPhysicsVelocity() + impulse * invMassA);
+        if (!b.isFixed() && !b.isKinematic()) b.setPhysicsVelocity(b.getPhysicsVelocity() - impulse * invMassB);
+
+        if (a.isKinematic()) {
+            a.getBody().setPhysicsVelocity(cancelAlongNormal(a.getPhysicsVelocity(),collision));
+            a.getBody().setControllerVelocity(cancelAlongNormal(a.getControllerVelocity(),collision));
+        }
+        if (b.isKinematic()) {
+            b.getBody().setPhysicsVelocity(cancelAlongNormal(b.getPhysicsVelocity(),collision));
+            b.getBody().setControllerVelocity(cancelAlongNormal(b.getControllerVelocity(),collision));
+        }
 
         const float percent = 0.2f;
         Vector2 correction = collision.normal * (collision.depth / (invMassA + invMassB)) * percent;
         if (!a.isFixed()) a.setPosition(a.getPosition() + correction * invMassA);
         if (!b.isFixed()) b.setPosition(b.getPosition() - correction * invMassB);
-
-        if (a.isKinematic()) {
-            Vector2 vel = a.getVelocity();
-            float alongNormal = Vector2::dot(vel,collision.normal);
-            if (vel.dot(collision.normal) < 0) {
-                a.setVelocity(a.getVelocity() - collision.normal * alongNormal);
-            }
-        }
-        if (b.isKinematic()) {
-            Vector2 vel = a.getVelocity();
-            float alongNormal = Vector2::dot(vel,collision.normal);
-            if (vel.dot(collision.normal) < 0) {
-                b.setVelocity(a.getVelocity() - collision.normal * alongNormal);
-            }
-        }
     }
 
+}
+
+Vector2 Physics::cancelAlongNormal(Vector2 velocity, Collision collision) {
+    float alongNormalPhysics = Vector2::dot(velocity,collision.normal);
+    if (alongNormalPhysics < 0) {
+        return velocity - collision.normal * alongNormalPhysics;
+    }
+    return velocity;
 }
