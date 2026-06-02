@@ -6,7 +6,8 @@
 #include <utility>
 #include "Shader.h"
 #include "RegularPolygon.h"
-#include "MovementController.h"
+#include "controllers/TopDownController.h"
+#include "controllers/PlatformerController.h"
 #include "Rectangle.h"
 #include "GameObject.h"
 #include "Physics.h"

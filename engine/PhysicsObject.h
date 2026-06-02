@@ -9,6 +9,7 @@ class PhysicsObject {
     bool fixed = false;
     bool kinematic = false;
     bool hasGrav = true;
+    bool onGround = false;
 
     float mass = 1;
     float invMass;
@@ -39,6 +40,7 @@ public:
     bool isFixed() const {return fixed;}
     bool isKinematic() const {return kinematic;}
     bool hasGravity() const {return hasGrav;}
+    bool isOnGround() const {return onGround;}
     void setPosition(const Vector2& other) {pos = other;}
     void setPhysicsVelocity(const Vector2& other) { physicsVelocity = other;}
     void setControllerVelocity(const Vector2& other) { controllerVelocity = other;}
@@ -47,4 +49,5 @@ public:
     void setFixed(bool fix) {fixed = fix;}
     void setKinematic(bool kin) {kinematic = kin;}
     void setGravity(bool grav) {hasGrav = grav;}
+    void setOnGround(bool ground) {onGround = ground;}
 };

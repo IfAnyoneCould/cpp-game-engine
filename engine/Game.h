@@ -9,7 +9,7 @@ void render();
     int main(int arc, char* argv[]) {\
         Engine::init();\
         start(); \
-        const double PHYSICS_STEP = 1.0 / 240.0; \
+        constexpr double PHYSICS_STEP = 1.0 / 240.0; \
         double accumulator = 0; \
         while(Engine::isRunning()) { \
             Engine::startFrame(); \

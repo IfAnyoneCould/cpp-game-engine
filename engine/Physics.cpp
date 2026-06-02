@@ -1,9 +1,7 @@
 #include "Physics.h"
 #include <iostream>
 
-void Physics::collision(GameObject& a, GameObject& b) {
-    Collision collision = a.getShape().intersectsSAT(b.getShape());
-
+Collision Physics::collision(GameObject& a, GameObject& b, Collision collision) {
     if (collision.collided) {
         float invMassA = a.isFixed() ? 0 : a.getBody().getInvMass();
         float invMassB = b.isFixed() ? 0 : b.getBody().getInvMass();
@@ -12,7 +10,7 @@ void Physics::collision(GameObject& a, GameObject& b) {
         Vector2 relVel = a.getTotalVelocity() - b.getTotalVelocity();
         float normalVel = Vector2::dot(relVel,collision.normal);
 
-        if (normalVel > 0) return;
+        if (normalVel > 0) return collision;
 
         float j = -(1 + restitution) * normalVel / (invMassA + invMassB);
 
@@ -36,7 +34,21 @@ void Physics::collision(GameObject& a, GameObject& b) {
         if (!b.isFixed()) b.setPosition(b.getPosition() - correction * invMassB);
     }
 
+    return collision;
+
 }
+
+Collision Physics::collision(GameObject &a, GameObject &b) {
+    Collision collision = a.getShape().intersectsSAT(b.getShape());
+
+    if (collision.collided) {
+        //std::cout << collision.normal.y << std::endl;
+        if (collision.normal.y > 0) a.getBody().setOnGround(true);
+        if (collision.normal.y < 0) b.getBody().setOnGround(true);
+    }
+    return collision;
+}
+
 
 Vector2 Physics::cancelAlongNormal(Vector2 velocity, Collision collision) {
     float alongNormalPhysics = Vector2::dot(velocity,collision.normal);

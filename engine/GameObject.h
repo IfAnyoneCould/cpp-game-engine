@@ -3,7 +3,7 @@
 
 #include "Shape.h"
 #include "PhysicsObject.h"
-#include "Controller.h"
+#include "controllers/Controller.h"
 
 class GameObject {
     Shape* shape;
@@ -20,7 +20,7 @@ public:
     void addPhysicsVelocity(const Vector2& vel) const;
     void setFixed(bool fixed) const {body->setFixed(fixed);}
     void setKinematic(bool kin) const {body->setKinematic(kin);}
-    void addController(Controller* controller) {controllers.push_back(controller);};
+    void addController(Controller* controller) {controller->setBody(body.get());controllers.push_back(controller);};
 
     Shape& getShape() const {return *shape;}
     PhysicsObject& getBody() const {return *body;}
