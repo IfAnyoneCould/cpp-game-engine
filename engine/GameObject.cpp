@@ -17,6 +17,6 @@ void GameObject::applyVelocity(double deltaTime) const {
     shape->setOffset(body->getPosition());
 }
 
-void GameObject::addVelocity(const Vector2 vel) const {
+void GameObject::addVelocity(const Vector2& vel) const {
     body->addVelocity(vel);
 }

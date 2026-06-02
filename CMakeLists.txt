@@ -41,6 +41,10 @@ add_executable(physics game/main.cpp
         engine/Game.h
         engine/Engine.cpp
         engine/Engine.h
+        engine/Camera.cpp
+        engine/Camera.h
+        engine/Mat4.h
+        engine/Mat4.cpp
 )
 
 target_link_libraries(physics PRIVATE SDL2::SDL2main SDL2::SDL2 glad::glad)

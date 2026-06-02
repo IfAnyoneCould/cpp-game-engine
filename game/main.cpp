@@ -8,16 +8,14 @@ GameObject* a;
 Rectangle* rect;
 GameObject* b;
 
+Camera* cam;
+
 const Uint8* keys;
 
 void start() {
 
     keys = Engine::getKeys();
-
-
-    program = Shader::getProgram({
-        {"shaders/vertex.glsl",GL_VERTEX_SHADER},
-        {"shaders/fragment.glsl",GL_FRAGMENT_SHADER}});
+    program = Engine::getProgram();
 
     shape = new RegularPolygon(200.0f,6,program);
     controller = new MovementController(500.0f);
@@ -27,12 +25,15 @@ void start() {
     rect = new Rectangle(100,100,program);
     b = new GameObject(rect);
 
+    cam = new Camera(program);
 
 }
 
 void update(double deltaTime) {
 
     controller->update(keys);
+
+    //cam->addPosition(controller->getVelocity() * deltaTime);
 
     a->setVelocity(controller->getVelocity());
 

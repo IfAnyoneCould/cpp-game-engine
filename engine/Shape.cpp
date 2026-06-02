@@ -2,6 +2,7 @@
 #include <iostream>
 #include <map>
 #include "Geometry.h"
+#include "Mat4.h"
 
 std::vector<Vector2> Shape::getVertices() const {
     std::vector<Vector2> vertices;
@@ -35,7 +36,7 @@ Shape::Shape(const std::vector<Triangle> &triangles, unsigned int program)
     }
 
     addLocation("color");
-    addLocation("offset");
+    addLocation("model");
 
 }
 
@@ -61,6 +62,7 @@ std::vector<unsigned int> Shape::getIndices() const {
 }
 
 void Shape::draw() const {
+
     glUseProgram(program);
     setUniforms();
     glBindVertexArray(buffer.VAO);
@@ -94,7 +96,8 @@ void Shape::addLocation(const char* loc) {
 }
 
 void Shape::setUniforms() const {
-    glUniform2f(locations.at("offset"),offset.x / Constants::WORLD_WIDTH,offset.y / Constants::WORLD_HEIGHT);
+    Mat4 model = Mat4::translate(offset);
+    glUniformMatrix4fv(locations.at("model"),1,GL_FALSE,model.getM());
     glUniform3f(locations.at("color"),color.r,color.g,color.b);
 }
 

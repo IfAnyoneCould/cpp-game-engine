@@ -5,6 +5,14 @@ namespace Engine {
     static SDL_Window* window;
     static SDL_GLContext ctx;
 
+    unsigned int program;
+
+    unsigned int modelLoc;
+    unsigned int viewLoc;
+    unsigned int projectLoc;
+    Mat4 identity = Mat4::identity();
+    Mat4 project = Mat4::orthographic(0,Constants::WORLD_WIDTH,0,Constants::WORLD_HEIGHT);
+
     static const Uint8* keys;
     static SDL_Event event;
 
@@ -40,12 +48,24 @@ namespace Engine {
         keys = SDL_GetKeyboardState(NULL);
         SDL_Event event;
 
+        program = Shader::getProgram({
+        {"shaders/vertex.glsl",GL_VERTEX_SHADER},
+        {"shaders/fragment.glsl",GL_FRAGMENT_SHADER}});
+
+        modelLoc = glGetUniformLocation(program,"model");
+        viewLoc = glGetUniformLocation(program,"view");
+        projectLoc = glGetUniformLocation(program,"projection");
+
     }
 
     void startFrame() {
         last = now;
         now = SDL_GetPerformanceCounter();
         deltaTime = static_cast<double>(now - last) / SDL_GetPerformanceFrequency();
+
+        glUniformMatrix4fv(modelLoc,1,GL_FALSE,identity.getM());
+        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, identity.getM());
+        glUniformMatrix4fv(projectLoc,1,GL_FALSE,project.getM());
 
         SDL_PumpEvents();
 
@@ -83,4 +103,5 @@ namespace Engine {
     const Uint8 *getKeys() {return keys;}
     SDL_Event getEvents() {return event;}
     bool isRunning() {return running;}
+    unsigned int getProgram() {return program;}
 }

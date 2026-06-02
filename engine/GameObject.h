@@ -15,7 +15,7 @@ public:
 
     void setPosition(const Vector2& pos) const;
     void setVelocity(const Vector2& vel) const;
-    void addVelocity(const Vector2 vel) const;
+    void addVelocity(const Vector2& vel) const;
     void setFixed(bool fixed) const {body->setFixed(fixed);}
     void setKinematic(bool kin) const {body->setKinematic(kin);}
 

@@ -10,6 +10,7 @@
 #include "Rectangle.h"
 #include "GameObject.h"
 #include "Physics.h"
+#include "Camera.h"
 
 namespace Engine {
 
@@ -24,5 +25,6 @@ namespace Engine {
     const Uint8* getKeys();
     SDL_Event getEvents();
     bool isRunning();
+    unsigned int getProgram();
 
 }
