@@ -15,7 +15,6 @@
 namespace Engine {
 
     void init();
-    void update(double deltaTime);
     void startFrame();
     void endFrame();
     void quit();

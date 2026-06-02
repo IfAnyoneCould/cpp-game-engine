@@ -34,25 +34,34 @@ void update(double deltaTime) {
     Physics::collision(*a,*b);
     a->applyVelocity(deltaTime);
 
+}
+
+void render() {
     a->getShape().drawNormals();
 
     rect->drawWireFrame();
     a->getShape().drawWireFrame();
-
 }
 
-
-int main(int arc, char* argv[]) {
-    Engine::init();
-    start();
-    while(Engine::isRunning()) {
-        Engine::startFrame();
-        update(Engine::getDeltaTime());
-        Engine::endFrame();
-    }
-    Engine::quit();
-    return 0;
+int main(int arc, char* argv[]) {\
+    Engine::init();\
+    start(); \
+    const double PHYSICS_STEP = 1.0 / 240.0; \
+    double accumulator = 0; \
+    while(Engine::isRunning()) { \
+        Engine::startFrame(); \
+        accumulator += Engine::getDeltaTime(); \
+        while (accumulator >= PHYSICS_STEP) { \
+            update(PHYSICS_STEP); \
+            accumulator -= PHYSICS_STEP; \
+        } \
+        render(); \
+        Engine::endFrame(); \
+    }   \
+    Engine::quit(); \
+    return 0; \
 }
+
 
 
 
