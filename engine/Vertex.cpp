@@ -5,8 +5,8 @@
 std::vector<float> Vertex::getVertexArray(const std::vector<Vector2>& vec2Array) {
     std::vector<float> array = {};
     for (const auto& v : vec2Array) {
-        array.push_back(v.x / Constants::WORLD_WIDTH);
-        array.push_back(v.y / Constants::WORLD_HEIGHT);
+        array.push_back(v.x);
+        array.push_back(v.y);
         array.push_back(0);
     }
     return array;

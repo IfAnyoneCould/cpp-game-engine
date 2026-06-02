@@ -1,16 +1,15 @@
 #pragma once
 #include <SDL_stdinc.h>
 #include "Vector2.h"
+#include "Controller.h"
 
-class MovementController {
-    Vector2 velocity = Vector2{};
+class MovementController : public Controller{
     float MAX_SPEED;
+    const Uint8* keys;
 
 public:
-    explicit MovementController(float max) {this->MAX_SPEED = max;}
+    explicit MovementController(float max, const Uint8* keys) : MAX_SPEED(max), keys(keys), Controller(true) {}
 
-    [[nodiscard]] const Vector2& getVelocity() const {return velocity;}
-
-    void update(const Uint8* keys);
+    void update(double deltaTime) override;
 
 };

@@ -3,10 +3,12 @@
 
 #include "Shape.h"
 #include "PhysicsObject.h"
+#include "Controller.h"
 
 class GameObject {
     Shape* shape;
     std::unique_ptr<PhysicsObject> body;
+    std::vector<Controller*> controllers;
 
 public:
     GameObject(Shape* shape, PhysicsObject* body) : shape(shape), body(body){}
@@ -18,6 +20,7 @@ public:
     void addVelocity(const Vector2& vel) const;
     void setFixed(bool fixed) const {body->setFixed(fixed);}
     void setKinematic(bool kin) const {body->setKinematic(kin);}
+    void addController(Controller* controller) {controllers.push_back(controller);};
 
     Shape& getShape() const {return *shape;}
     PhysicsObject& getBody() const {return *body;}

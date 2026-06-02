@@ -16,7 +16,7 @@ public:
     static Mat4 rotateDegrees(float theta);
     static Mat4 translate(const Vector2& vec);
     static Mat4 identity();
-    static Mat4 orthographic(float left, float right, float top, float bottom);
+    static Mat4 orthographic(float left, float right, float bottom, float top);
 
     Mat4 operator*(const Mat4& other) const;
 

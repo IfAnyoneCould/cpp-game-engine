@@ -13,6 +13,16 @@ void GameObject::applyForces(double deltaTime) const {
 }
 
 void GameObject::applyVelocity(double deltaTime) const {
+
+    for (const auto& c : controllers) {
+        c->update(deltaTime);
+        if (c->overridesVelocity()) {
+            body->setVelocity(c->getVelocity());
+        } else {
+            body->addVelocity(c->getVelocity());
+        }
+    }
+
     body->applyVelocity(deltaTime);
     shape->setOffset(body->getPosition());
 }

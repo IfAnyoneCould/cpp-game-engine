@@ -16,7 +16,6 @@ add_executable(physics game/main.cpp
         engine/PhysicsObject.h
         engine/PhysicsObject.cpp
         engine/Vector2.h
-        engine/Forces.h
         engine/Vectors.h
         engine/MovementController.h
         engine/MovementController.cpp
@@ -45,6 +44,7 @@ add_executable(physics game/main.cpp
         engine/Camera.h
         engine/Mat4.h
         engine/Mat4.cpp
+        engine/Controller.h
 )
 
 target_link_libraries(physics PRIVATE SDL2::SDL2main SDL2::SDL2 glad::glad)

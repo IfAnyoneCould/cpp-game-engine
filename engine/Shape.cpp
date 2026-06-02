@@ -197,7 +197,7 @@ Collision Shape::intersectsSAT(const Shape &other) const {
 
 void Shape::drawNormals() const {
     for (const auto& v : normals) {
-        Geometry::drawLine(localCenter(),localCenter() + v * 50.0f,program);
+        Geometry::drawLine(worldCenter(),worldCenter() + v * 50.0f,program);
     }
 }
 

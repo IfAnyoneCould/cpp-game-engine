@@ -13,29 +13,22 @@ Camera* cam;
 const Uint8* keys;
 
 void start() {
-
     keys = Engine::getKeys();
     program = Engine::getProgram();
 
-    shape = new RegularPolygon(200.0f,6,program);
-    controller = new MovementController(500.0f);
+    shape = new RegularPolygon(100.0f,6,program);
+    controller = new MovementController(500.0f,keys);
     a = new GameObject(shape, 10);
     a->setKinematic(true);
+    a->setPosition(Vectors::WORLD_CENTER);
+    a->addController(controller);
 
-    rect = new Rectangle(100,100,program);
+    rect = new Rectangle(Constants::WORLD_WIDTH,100,program);
     b = new GameObject(rect);
-
-    cam = new Camera(program);
 
 }
 
 void update(double deltaTime) {
-
-    controller->update(keys);
-
-    //cam->addPosition(controller->getVelocity() * deltaTime);
-
-    a->setVelocity(controller->getVelocity());
 
     Physics::collision(*a,*b);
 

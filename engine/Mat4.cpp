@@ -57,7 +57,6 @@ Mat4 Mat4::orthographic(float left, float right, float bottom, float top) {
     Mat4 result;
     result.m[0]  = 2.0f / (right - left);
     result.m[5]  = 2.0f / (top - bottom);
-    result.m[10] = -1.0f;
     result.m[12] = -(right + left) / (right - left);
     result.m[13] = -(top + bottom) / (top - bottom);
     result.m[15] = 1.0f;
