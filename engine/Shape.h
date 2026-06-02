@@ -7,6 +7,7 @@
 #include "Vertex.h"
 #include "Colors.h"
 #include "Vectors.h"
+#include "Shader.h"
 
 struct Collision {
     bool collided;
@@ -27,7 +28,7 @@ protected:
     BufferObject buffer;
     float boundingCircleRadius;
     Color color = Colors::BLACK;
-    unsigned int program;
+    const Shader* program;
     std::unordered_map<std::string,unsigned int> locations;
 
 public:
@@ -35,8 +36,8 @@ public:
         glDeleteVertexArrays(1,&buffer.VAO);
         glDeleteBuffers(1,&buffer.VBO);
     }
-    Shape(const std::vector<Triangle>& triangles, unsigned int program);
-    Shape(const std::vector<Triangle>& triangles, const Color& color, unsigned int program);
+    Shape(const std::vector<Triangle>& triangles, const Shader& program);
+    Shape(const std::vector<Triangle>& triangles, const Color& color, const Shader& program);
 
     virtual std::vector<Vector2> getVertices() const;
     Vector2 worldCenter() const;
@@ -59,6 +60,7 @@ public:
 
     void setUniforms() const;
     virtual void draw() const;
+    virtual void draw(const Vector2& position) const;
     virtual void genBuffer();
     void drawWireFrame() const;
     void drawNormals() const;

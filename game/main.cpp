@@ -1,6 +1,5 @@
 #include "../engine/Game.h"
 
-unsigned int program;
 RegularPolygon* shape;
 PlatformerController* controller;
 GameObject* a;
@@ -14,16 +13,15 @@ const Uint8* keys;
 
 void start() {
     keys = Engine::getKeys();
-    program = Engine::getProgram();
 
-    shape = new RegularPolygon(50.0f,6,program);
+    shape = new RegularPolygon(50.0f,6,Engine::getProgram());
     controller = new PlatformerController(500.0f,500.0f,keys);
     a = new GameObject(shape, 10);
     a->setKinematic(true);
     a->setPosition(Vectors::WORLD_CENTER);
     a->addController(controller);
 
-    rect = new Rectangle(Constants::WORLD_WIDTH,100,program);
+    rect = new Rectangle(Constants::WORLD_WIDTH,100,Engine::getProgram());
     b = new GameObject(rect);
 
 }

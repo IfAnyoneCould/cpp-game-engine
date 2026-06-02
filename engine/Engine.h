@@ -25,6 +25,6 @@ namespace Engine {
     const Uint8* getKeys();
     SDL_Event getEvents();
     bool isRunning();
-    unsigned int getProgram();
+    const Shader& getProgram();
 
 }

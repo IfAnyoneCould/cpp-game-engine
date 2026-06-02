@@ -1,6 +1,7 @@
 #include "RegularPolygon.h"
+#include "Mat4.h"
 
-RegularPolygon::RegularPolygon(float radius, int sides, unsigned int program)
+RegularPolygon::RegularPolygon(float radius, int sides, const Shader& program)
     : Shape([&](){
         std::vector<Triangle> tris;
         Vector2 center = Vector2{};
@@ -19,7 +20,7 @@ RegularPolygon::RegularPolygon(float radius, int sides, unsigned int program)
     genBuffer();
 }
 
-RegularPolygon::RegularPolygon(float radius, int sides, const Color& color, unsigned int program)
+RegularPolygon::RegularPolygon(float radius, int sides, const Color& color, const Shader& program)
     : RegularPolygon(radius, sides, program) {
     this->color = color;
 }
@@ -52,7 +53,7 @@ std::vector<unsigned int> RegularPolygon::getIndices() const {
 }
 
 void RegularPolygon::draw() const {
-    glUseProgram(program);
+    program->use();
     setUniforms();
     glBindVertexArray(buffer.VAO);
     glDrawElements(GL_TRIANGLES,sides * 3,GL_UNSIGNED_INT,0);
@@ -60,4 +61,12 @@ void RegularPolygon::draw() const {
 
 void RegularPolygon::genBuffer() {
     this->buffer = Vertex::getBufferObjects(getVertices(),getIndices());
+}
+
+void RegularPolygon::draw(const Vector2 &position) const {
+    const Mat4 model = Mat4::translate(position);
+    program->use();
+    glUniformMatrix4fv(locations.at("model"),1,GL_FALSE,model.getM());
+    glBindVertexArray(buffer.VAO);
+    glDrawElements(GL_TRIANGLES,sides * 3,GL_UNSIGNED_INT,0);
 }

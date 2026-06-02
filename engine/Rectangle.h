@@ -7,12 +7,12 @@ class Rectangle : public Shape {
 
 public:
 
-    Rectangle(float width, float height, unsigned int program);
-    Rectangle(float width, float height, const Color& color, unsigned int program);
+    Rectangle(float width, float height, const Shader& program);
+    Rectangle(float width, float height, const Color& color, const Shader& program);
 
     [[nodiscard]] float getWidth() const {return width;}
     [[nodiscard]] float getHeight() const {return height;}
     [[nodiscard]] Vector2 localCenter() const override;
-    [[nodiscard]] bool contains(const Vector2& other) const;
+    [[nodiscard]] bool contains(const Vector2& other) const override;
 
 };

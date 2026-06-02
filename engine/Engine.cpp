@@ -5,7 +5,7 @@ namespace Engine {
     static SDL_Window* window;
     static SDL_GLContext ctx;
 
-    unsigned int program;
+    Shader program;
 
     unsigned int modelLoc;
     unsigned int viewLoc;
@@ -48,13 +48,13 @@ namespace Engine {
         keys = SDL_GetKeyboardState(NULL);
         SDL_Event event;
 
-        program = Shader::getProgram({
+        program = Shader({
         {"shaders/vertex.glsl",GL_VERTEX_SHADER},
         {"shaders/fragment.glsl",GL_FRAGMENT_SHADER}});
 
-        modelLoc = glGetUniformLocation(program,"model");
-        viewLoc = glGetUniformLocation(program,"view");
-        projectLoc = glGetUniformLocation(program,"projection");
+        modelLoc = glGetUniformLocation(program.getId(),"model");
+        viewLoc = glGetUniformLocation(program.getId(),"view");
+        projectLoc = glGetUniformLocation(program.getId(),"projection");
 
     }
 
@@ -103,5 +103,5 @@ namespace Engine {
     const Uint8 *getKeys() {return keys;}
     SDL_Event getEvents() {return event;}
     bool isRunning() {return running;}
-    unsigned int getProgram() {return program;}
+    const Shader& getProgram() {return program;}
 }

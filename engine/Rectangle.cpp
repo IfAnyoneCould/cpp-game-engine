@@ -1,6 +1,6 @@
 #include "Rectangle.h"
 
-Rectangle::Rectangle(float width, float height, unsigned int program)
+Rectangle::Rectangle(float width, float height, const Shader& program)
     : Shape([&]() {
         std::vector<Triangle> tri;
         tri.push_back({{0,0},{width,0},{width,height}});
@@ -8,7 +8,7 @@ Rectangle::Rectangle(float width, float height, unsigned int program)
         return tri;
     }(),program), height(height), width(width) {genBuffer();}
 
-Rectangle::Rectangle(float width, float height, const Color& color, unsigned int program)
+Rectangle::Rectangle(float width, float height, const Color& color, const Shader& program)
     :   Rectangle(width,height,program){
     this->color = color;
 }

@@ -75,3 +75,12 @@ unsigned int Shader::getProgram(const std::vector<unsigned int>& data) {
 
     return program;
 }
+
+Shader &Shader::operator=(Shader && other) noexcept{
+    if (this != &other) {
+        glDeleteProgram(id);
+        id = other.id;
+        other.id = 0;
+    }
+    return *this;
+}

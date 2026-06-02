@@ -9,8 +9,8 @@ public:
     ~RegularPolygon() override {
         glDeleteBuffers(1,&buffer.EBO);
     }
-    RegularPolygon(float radius, int sides, unsigned int program);
-    RegularPolygon(float radius, int sides, const Color& color, unsigned int program);
+    RegularPolygon(float radius, int sides, const Shader& program);
+    RegularPolygon(float radius, int sides, const Color& color, const Shader& program);
 
     [[nodiscard]] std::vector<Vector2> getVertices() const override;
     [[nodiscard]] Vector2 localCenter() const override;
@@ -19,6 +19,7 @@ public:
     [[nodiscard]] int getSides() const {return sides;}
 
     void draw() const override;
+    void draw(const Vector2& position) const override;
     void genBuffer() override;
 
 };

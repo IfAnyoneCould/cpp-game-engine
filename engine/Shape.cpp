@@ -24,9 +24,9 @@ Vector2 Shape::localCenter() const {
 }
 
 
-Shape::Shape(const std::vector<Triangle> &triangles, unsigned int program)
+Shape::Shape(const std::vector<Triangle> &triangles, const Shader& program)
     : triangles(triangles), vertices(getVertices()), normals(getNormals()), nonParallelNormals(Geometry::removeParallelVectors(normals)),
-      boundingCircleRadius(0), program(program){
+      boundingCircleRadius(0), program(&program){
 
     const Vector2 center = localCenter();
 
@@ -40,7 +40,7 @@ Shape::Shape(const std::vector<Triangle> &triangles, unsigned int program)
 
 }
 
-Shape::Shape(const std::vector<Triangle> &triangles, const Color& color, unsigned int program)
+Shape::Shape(const std::vector<Triangle> &triangles, const Color& color, const Shader& program)
     : Shape(triangles,program) {
     this->color = color;
 }
@@ -63,7 +63,7 @@ std::vector<unsigned int> Shape::getIndices() const {
 
 void Shape::draw() const {
 
-    glUseProgram(program);
+    program->use();
     setUniforms();
     glBindVertexArray(buffer.VAO);
     glDrawArrays(GL_TRIANGLES,0,triangles.size() * 3);
@@ -92,7 +92,7 @@ void Shape::setColor(const Color& color) {
 }
 
 void Shape::addLocation(const char* loc) {
-    locations[loc] = glGetUniformLocation(program,loc);
+    locations[loc] = glGetUniformLocation(program->getId(),loc);
 }
 
 void Shape::setUniforms() const {
@@ -197,7 +197,7 @@ Collision Shape::intersectsSAT(const Shape &other) const {
 
 void Shape::drawNormals() const {
     for (const auto& v : normals) {
-        Geometry::drawLine(worldCenter(),worldCenter() + v * 50.0f,program);
+        Geometry::drawLine(worldCenter(),worldCenter() + v * 50.0f,*program);
     }
 }
 
@@ -205,4 +205,12 @@ bool Shape::intersectsBoundingCircle(const Shape &other) const {
     return worldCenter().distanceToSquared(other.worldCenter()) <=
        (boundingCircleRadius + other.boundingCircleRadius) *
        (boundingCircleRadius + other.boundingCircleRadius);
+}
+
+void Shape::draw(const Vector2& position) const {
+    Mat4 model = Mat4::translate(position);
+    program->use();
+    glUniformMatrix4fv(locations.at("model"),1,GL_FALSE,model.getM());
+    glBindVertexArray(buffer.VAO);
+    glDrawArrays(GL_TRIANGLES,0,triangles.size() * 3);
 }

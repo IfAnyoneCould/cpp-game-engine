@@ -2,6 +2,7 @@
 #include "Vector2.h"
 #include "Vertex.h"
 #include <glad/glad.h>
+#include "Shader.h"
 
 namespace Geometry {
     inline bool linesIntersect(const Vector2& a, const Vector2& b, const Vector2& c, const Vector2& d) {
@@ -35,11 +36,11 @@ namespace Geometry {
         return result;
     }
 
-    inline void drawLine(const Vector2& a, const Vector2& b, unsigned int program) {
+    inline void drawLine(const Vector2& a, const Vector2& b, const Shader& program) {
 
         BufferObject buffer = Vertex::getBufferObjects({a,b});
 
-        glUseProgram(program);
+        program.use();
         glBindVertexArray(buffer.VAO);
         glDrawArrays(GL_LINES,0,2);
 

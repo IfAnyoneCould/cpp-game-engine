@@ -47,6 +47,11 @@ add_executable(physics game/main.cpp
         engine/controllers/Controller.h
         engine/controllers/PlatformerController.cpp
         engine/controllers/PlatformerController.h
+        engine/WorldObject.cpp
+        engine/WorldObject.h
+)
+target_include_directories(${PROJECT_NAME} PRIVATE
+        C:/Users/JonahW/vcpkg/installed/x64-mingw-dynamic/include
 )
 
 target_link_libraries(physics PRIVATE SDL2::SDL2main SDL2::SDL2 glad::glad)
