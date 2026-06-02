@@ -21,9 +21,10 @@ void start() {
 
     shape = new RegularPolygon(200.0f,6,program);
     controller = new MovementController(500.0f);
-    a = new GameObject(shape, 100);
+    a = new GameObject(shape, 10);
+    a->setKinematic(true);
 
-    rect = new Rectangle(100,500,program);
+    rect = new Rectangle(100,100,program);
     b = new GameObject(rect);
 
 
@@ -35,11 +36,11 @@ void update(double deltaTime) {
 
     a->setVelocity(controller->getVelocity());
 
-    //a.getShape().drawNormals();
-
     Physics::collision(*a,*b);
 
-    a->update(deltaTime);
+    a->applyVelocity(deltaTime);
+
+    a->getShape().drawNormals();
 
     rect->drawWireFrame();
     a->getShape().drawWireFrame();

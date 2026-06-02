@@ -162,7 +162,9 @@ Vector2 Shape::project(const Vector2 &axis) const {
 
 Collision Shape::intersectsSAT(const Shape &other) const {
 
-    if (!intersectsBoundingCircle(other)) return {false,{0,0},0};
+    if (!intersectsBoundingCircle(other)) {
+        return {};
+    }
 
     const std::vector<Vector2> axes[2] = {nonParallelNormals, other.nonParallelNormals};
 

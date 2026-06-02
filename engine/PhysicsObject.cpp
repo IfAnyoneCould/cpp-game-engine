@@ -1,10 +1,13 @@
 #include "PhysicsObject.h"
 #include "Vectors.h"
 
-void PhysicsObject::update(double deltaTime) {
-    velocity += (netForce/mass) * deltaTime;
-    pos += velocity * deltaTime;
+void PhysicsObject::applyForces(double deltaTime) {
+    velocity+=netForce * invMass * deltaTime;
     netForce = Vectors::ZERO;
+}
+
+void PhysicsObject::applyVelocity(double deltaTime) {
+    pos+=velocity * deltaTime;
 }
 
 void PhysicsObject::setForces(const std::vector<Vector2>& otherForces) {
