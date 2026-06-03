@@ -11,7 +11,7 @@ class Animation {
 
 public:
     Animation();
-    Animation(const TextureMap& t, int first, int last, float timeStep,const Shader& shader);
+    Animation(const TextureMap& t,float width,float height, int first, int last, float timeStep,const Shader& shader);
     ~Animation() {delete sprite;}
 
     Animation(Animation&) = delete;
@@ -24,6 +24,7 @@ public:
     //get and set
     void setOffset(const Vector2& v) {offset = v;}
     void addOffset(const Vector2& v) {offset += v;}
+    void setSize(float width, float height) const {sprite->setSize(width,height);}
     const Vector2& getOffset() const {return offset;}
 
 

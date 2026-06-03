@@ -1,11 +1,13 @@
 #include "Animation.h"
+#include <iostream>
 
 Animation::Animation()
     : program(), map(), first(-1), last(-1), current(-1), timeStep(0.0f) {}
 
-Animation::Animation(const TextureMap &t, int first, int last, float timeStep, const Shader& shader)
+Animation::Animation(const TextureMap &t,float width, float height, int first, int last, float timeStep, const Shader& shader)
     : program(&shader), map(&t), first(first), last(last), current(first), timeStep(timeStep){
     sprite = new Sprite(*map,first,*program);
+    setSize(width,height);
 }
 
 void Animation::draw(double deltaTime) {
@@ -19,6 +21,8 @@ void Animation::draw(double deltaTime) {
         else current++;
         currentTime = 0;
     }
+
+    //std::cout << sprite->getIndex() << std::endl;
 
 }
 

@@ -13,6 +13,7 @@
 #include "Physics.h"
 #include "Camera.h"
 #include "Sprite.h"
+#include "Animation.h"
 
 namespace Engine {
 

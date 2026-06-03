@@ -3,7 +3,7 @@
 
 void start();
 void update(double deltaTime);
-void render();
+void render(double deltaTime);
 
 #define RUN \
     int main(int arc, char* argv[]) {\
@@ -18,7 +18,7 @@ void render();
             update(PHYSICS_STEP); \
             accumulator -= PHYSICS_STEP; \
             } \
-            render(); \
+            render(Engine::getDeltaTime()); \
             Engine::endFrame(); \
         }   \
         Engine::quit(); \

@@ -10,14 +10,15 @@ GameObject* b;
 Camera* cam;
 
 Texture* tex;
-Sprite* sprite;
+TextureMap* map;
+Animation* sprite;
 
 const Uint8* keys;
 
 void start() {
     keys = Engine::getKeys();
 
-    shape = new Rectangle(100.0f,100.0f,Engine::getProgram());
+    shape = new Rectangle(200.0f,200.0f,Engine::getProgram());
     controller = new PlatformerController(500.0f,500.0f,keys);
     a = new GameObject(shape, 10);
     a->setKinematic(true);
@@ -28,8 +29,9 @@ void start() {
     b = new GameObject(rect);
 
 
-    tex = new Texture("textures/test.png");
-    sprite = new Sprite(*tex,100,100,Engine::getProgram());
+    tex = new Texture("textures/cat.png");
+    map = new TextureMap(*tex,2,2);
+    sprite = new Animation(*map,200,200,0,3,1,Engine::getProgram());
     sprite->setOffset(Vectors::WORLD_CENTER);
 
 }
@@ -44,11 +46,11 @@ void update(double deltaTime) {
 
 }
 
-void render() {
+void render(double deltaTime) {
 
     rect->drawWireFrame();
     a->getShape().drawWireFrame();
-    sprite->draw();
+    sprite->draw(deltaTime);
 }
 
 
@@ -64,7 +66,7 @@ int main(int arc, char* argv[]) {\
             update(PHYSICS_STEP); \
             accumulator -= PHYSICS_STEP; \
         } \
-        render(); \
+        render(Engine::getDeltaTime()); \
         Engine::endFrame(); \
     }   \
     Engine::quit(); \
