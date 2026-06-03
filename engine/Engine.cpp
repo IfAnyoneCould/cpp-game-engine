@@ -56,6 +56,9 @@ namespace Engine {
         viewLoc = glGetUniformLocation(program.getId(),"view");
         projectLoc = glGetUniformLocation(program.getId(),"projection");
 
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     }
 
     void startFrame() {

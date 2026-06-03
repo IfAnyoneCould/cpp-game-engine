@@ -9,6 +9,9 @@ GameObject* b;
 
 Camera* cam;
 
+Texture* tex;
+Sprite* sprite;
+
 const Uint8* keys;
 
 void start() {
@@ -24,6 +27,11 @@ void start() {
     rect = new Rectangle(Constants::WORLD_WIDTH,100,Engine::getProgram());
     b = new GameObject(rect);
 
+
+    tex = new Texture("textures/test.png");
+    sprite = new Sprite(*tex,100,100,Engine::getProgram());
+    sprite->setOffset(Vectors::WORLD_CENTER);
+
 }
 
 void update(double deltaTime) {
@@ -32,6 +40,7 @@ void update(double deltaTime) {
     a->updateControllers(deltaTime);
     Physics::collision(*a,*b,col);
     a->applyVelocity(deltaTime);
+    sprite->setOffset(a->getPosition()-Vector2(50.0f,50.0f));
 
 }
 
@@ -39,6 +48,7 @@ void render() {
 
     rect->drawWireFrame();
     a->getShape().drawWireFrame();
+    sprite->draw();
 }
 
 

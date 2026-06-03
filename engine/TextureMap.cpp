@@ -5,8 +5,8 @@ std::array<Vector2,4> TextureMap::getVertices(int index) const {
     int row = index / columns;
     int column = index % columns;
 
-    float cellWidth = static_cast<float>(texture->getWidth()) / columns;
-    float cellHeight = static_cast<float>(texture->getHeight()) / rows;
+    float cellWidth = 1.0f / columns;
+    float cellHeight = 1.0f / rows;
 
     float x = column * cellWidth;
     float y = row * cellHeight;

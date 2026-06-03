@@ -1,7 +1,7 @@
 #include "Vertex.h"
 #include "Constants.h"
 #include <glad/glad.h>
-
+#include <iostream>
 std::vector<float> Vertex::getVertexArray(const std::vector<Vector2> &vec2Array, const std::vector<Vector2> &uvArray) {
     std::vector<float> array = {};
     for (int i = 0; i < vec2Array.size(); i++) {

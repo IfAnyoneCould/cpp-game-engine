@@ -1,6 +1,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "Texture.h"
 #include <stb_image.h>
+#include <iostream>
+
 Texture &Texture::operator=(Texture && other) noexcept {
     if (id != other.getId()) {
         glDeleteTextures(1,&id);
@@ -13,7 +15,12 @@ Texture &Texture::operator=(Texture && other) noexcept {
 unsigned int Texture::loadTexture(const std::string &path) {
     int width, height, channels;
 
-    unsigned char* data = stbi_load(path.c_str(),&width,&height,&channels,0);
+    stbi_set_flip_vertically_on_load(true);
+    unsigned char* data = stbi_load(path.c_str(),&width,&height,&channels,4);
+
+    if (!data) {
+        std::cout << "Failed to load texture: " << stbi_failure_reason() << std::endl;
+    }
 
     this->w = width;
     this->h = height;
