@@ -1,6 +1,6 @@
 #include "../engine/Game.h"
 
-RegularPolygon* shape;
+Rectangle* shape;
 PlatformerController* controller;
 GameObject* a;
 
@@ -17,7 +17,7 @@ const Uint8* keys;
 void start() {
     keys = Engine::getKeys();
 
-    shape = new RegularPolygon(50.0f,6,Engine::getProgram());
+    shape = new Rectangle(100.0f,100.0f,Engine::getProgram());
     controller = new PlatformerController(500.0f,500.0f,keys);
     a = new GameObject(shape, 10);
     a->setKinematic(true);
@@ -40,7 +40,7 @@ void update(double deltaTime) {
     a->updateControllers(deltaTime);
     Physics::collision(*a,*b,col);
     a->applyVelocity(deltaTime);
-    sprite->setOffset(a->getPosition()-Vector2(50.0f,50.0f));
+    sprite->setOffset(a->getPosition());
 
 }
 

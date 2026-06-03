@@ -15,8 +15,12 @@ class Sprite {
     int index;
     Vector2 offset;
     BufferObject buffer;
-    std::array<Vector2,4> vertices;
-    std::array<Vector2,4> uvVertices;
+    std::array<Vector2,4> vertices = {
+        Vector2(0,0),
+        Vector2(1,0),
+        Vector2(0,1),
+        Vector2(1,1)
+    };
     std::array<unsigned int, 6> indices = {0, 1, 3, 0, 2, 3};
     std::pmr::unordered_map<std::string,unsigned int> locations;
 
@@ -35,6 +39,9 @@ public:
     void draw() const;
 
     void setOffset(const Vector2& pos) {offset = pos;}
+    void setIndex(int i);
+    void setSize(float width, float height);
+    int getIndex() const {return index;}
     const Vector2& getOffset() const {return offset;}
 
 };

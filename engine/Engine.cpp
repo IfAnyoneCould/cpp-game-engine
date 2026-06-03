@@ -35,13 +35,20 @@ namespace Engine {
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,3);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION,3);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+        SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+        SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8);
 
         //create the window and rendering variables
         window = SDL_CreateWindow("Physics",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,Constants::WORLD_WIDTH,Constants::WORLD_HEIGHT,SDL_WINDOW_OPENGL);
+        if (!window) {
+            std::cout << "Window failed: " << SDL_GetError() << std::endl;
+        }
         SDL_GLContext ctx = SDL_GL_CreateContext(window);
 
         //tell opengl where its functions are (blind mf)
         gladLoadGLLoader(SDL_GL_GetProcAddress);
+
+        glEnable(GL_MULTISAMPLE);
 
         SDL_PumpEvents();
 

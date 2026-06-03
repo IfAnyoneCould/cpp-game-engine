@@ -1,0 +1,30 @@
+#pragma once
+#include "Sprite.h"
+
+class Animation {
+    const Shader* program;
+    const TextureMap* map;
+    Sprite* sprite = nullptr;
+    int first, last, current;
+    float timeStep, currentTime = 0;
+    Vector2 offset;
+
+public:
+    Animation();
+    Animation(const TextureMap& t, int first, int last, float timeStep,const Shader& shader);
+    ~Animation() {delete sprite;}
+
+    Animation(Animation&) = delete;
+    Animation(Animation&&) noexcept;
+    Animation& operator=(Animation&) = delete;
+    Animation& operator=(Animation&&) noexcept;
+
+    void draw(double deltaTime);
+
+    //get and set
+    void setOffset(const Vector2& v) {offset = v;}
+    void addOffset(const Vector2& v) {offset += v;}
+    const Vector2& getOffset() const {return offset;}
+
+
+};

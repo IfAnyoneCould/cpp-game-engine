@@ -2,24 +2,33 @@
 #include "Mat4.h"
 #include <iostream>
 
+void Sprite::setSize(float w, float h) {
+    this->width = w;
+    this->height = h;
+}
+
 void Sprite::init() {
-    vertices[0] = {0,0};
-    vertices[1] = {width,0};
-    vertices[2] = {0,height};
-    vertices[3] = {width,height} ;
+    program->use();
 
-    uvVertices = map->getVertices(index);
-
-    std::vector<Vector2> vec1(vertices.begin(), vertices.end());
-    std::vector<Vector2> vec2(uvVertices.begin(),uvVertices.end());
-    std::vector vec3(indices.begin(),indices.end());
-
-    buffer = Vertex::getBufferObjects(vec1,vec2,vec3);
-
+    addUniform("uvSize");
+    addUniform("uvOffset");
     addUniform("model");
     addUniform("useTexture");
     addUniform("tex");
+
+    setSize(width,height);
+
+    glUniform2f(locations.at("uvSize"), map->getCellWidth(), map->getCellHeight());
+    Vector2 uvOffset = map->getOffset(index);
+    glUniform2f(locations.at("uvOffset"),uvOffset.x,uvOffset.y);
+
+    std::vector vec1(vertices.begin(),vertices.end());
+    std::vector vec2(indices.begin(),indices.end());
+
+    buffer = Vertex::getBufferObjects(vec1,vec2);
 }
+
+
 
 Sprite::Sprite(const Texture &t, const Shader &s)
     : uniqueMap(TextureMap(t)), map(&uniqueMap), program(&s), width(t.getWidth()), height(t.getHeight()), index(0){
@@ -51,10 +60,16 @@ void Sprite::draw() const {
     program->use();
 
     glUniform1i(locations.at("useTexture"),1);
-    Mat4 model = Mat4::translate(offset);
+    Mat4 model = Mat4::translate(offset) * Mat4::scale({width,height});
     glUniformMatrix4fv(locations.at("model"),1,GL_FALSE,model.getM());
     glUniform1i(locations.at("tex"),0);
 
     glBindVertexArray(buffer.VAO);
     glDrawElements(GL_TRIANGLES,6 ,GL_UNSIGNED_INT,0);
+}
+
+void Sprite::setIndex(int i) {
+    index = i;
+    Vector2 uvOffset = map->getOffset(index);
+    glUniform2f(locations.at("uvOffset"),uvOffset.x,uvOffset.y);
 }
