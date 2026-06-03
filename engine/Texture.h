@@ -1,14 +1,13 @@
 #pragma once
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
 #include <string>
 #include <glad/glad.h>
 
 
 class Texture {
     unsigned int id;
+    int w = 0, h = 0;
 
-    static unsigned int loadTexture(const std::string& path);
+    unsigned int loadTexture(const std::string& path);
 
 public:
     Texture() : id(0) {};
@@ -21,6 +20,8 @@ public:
     Texture& operator=(Texture&&) noexcept;
 
     unsigned int getId() const {return id;}
+    int getWidth() const {return w;}
+    int getHeight() const {return h;}
 
     void bind() const {glBindTexture(GL_TEXTURE_2D,id);}
 

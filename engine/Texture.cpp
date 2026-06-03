@@ -1,5 +1,6 @@
+#define STB_IMAGE_IMPLEMENTATION
 #include "Texture.h"
-
+#include <stb_image.h>
 Texture &Texture::operator=(Texture && other) noexcept {
     if (id != other.getId()) {
         glDeleteTextures(1,&id);
@@ -13,6 +14,9 @@ unsigned int Texture::loadTexture(const std::string &path) {
     int width, height, channels;
 
     unsigned char* data = stbi_load(path.c_str(),&width,&height,&channels,0);
+
+    this->w = width;
+    this->h = height;
 
     unsigned int texture;
     glGenTextures(1,&texture);

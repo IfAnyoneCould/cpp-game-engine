@@ -37,6 +37,7 @@ Shape::Shape(const std::vector<Triangle> &triangles, const Shader& program)
 
     addLocation("color");
     addLocation("model");
+    addLocation("useTexture");
 
 }
 
@@ -99,6 +100,7 @@ void Shape::setUniforms() const {
     Mat4 model = Mat4::translate(offset);
     glUniformMatrix4fv(locations.at("model"),1,GL_FALSE,model.getM());
     glUniform3f(locations.at("color"),color.r,color.g,color.b);
+    glUniform1i(locations.at("useTexture"),0);
 }
 
 bool Shape::intersects(const Shape &other) const {
