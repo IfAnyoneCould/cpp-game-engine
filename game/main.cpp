@@ -20,18 +20,18 @@ void start() {
 
     shape = new Rectangle(200.0f,200.0f,Engine::getProgram());
     controller = new PlatformerController(500.0f,500.0f,keys);
-    a = new GameObject(shape, 10);
+    a = new GameObject(shape, 10,"hi");
     a->setKinematic(true);
     a->setPosition(Vectors::WORLD_CENTER);
     a->addController(controller);
 
     rect = new Rectangle(Constants::WORLD_WIDTH,100,Engine::getProgram());
-    b = new GameObject(rect);
+    b = new GameObject(rect,"rect");
 
 
-    tex = new Texture("textures/cat.png");
-    map = new TextureMap(*tex,2,2);
-    sprite = new Animation(*map,200,200,0,3,1,Engine::getProgram());
+    tex = new Texture("textures/test.png");
+    //map = new TextureMap(*tex,2,2);
+    sprite = new Animation(*tex,200,200,Engine::getProgram());
     sprite->setOffset(Vectors::WORLD_CENTER);
 
 }

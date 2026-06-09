@@ -10,8 +10,8 @@
 class Sprite {
 
     const Shader* program;
-    const TextureMap* map;
     TextureMap uniqueMap; // only used when a single sprite uses a texture
+    const TextureMap* map;
     int index;
     Vector2 offset;
     BufferObject buffer;
@@ -32,7 +32,9 @@ class Sprite {
 public:
 
     Sprite(const Texture& t, const Shader& s);
+    Sprite(const Texture& t, int index, const Shader& s);
     Sprite(const Texture& t, float width, float height, const Shader& s);
+    Sprite(const Texture& t, float width, float height, int index, const Shader& s);
     Sprite(const TextureMap& t, int index, const Shader& s);
     Sprite(const TextureMap& t, int index, float width, float height, const Shader& s);
 
@@ -42,6 +44,7 @@ public:
     void setIndex(int i);
     void setSize(float width, float height);
     int getIndex() const {return index;}
+    const TextureMap& getMap() const {return *map;}
     const Vector2& getOffset() const {return offset;}
 
 };

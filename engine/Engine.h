@@ -14,6 +14,7 @@
 #include "Camera.h"
 #include "Sprite.h"
 #include "Animation.h"
+#include "WorldObject.h"
 
 namespace Engine {
 

@@ -50,6 +50,16 @@ Sprite::Sprite(const TextureMap &t, int index, float width, float height, const 
     init();
 }
 
+Sprite::Sprite(const Texture &t, int index, const Shader &s)
+    : uniqueMap(TextureMap(t)), map(&uniqueMap), program(&s), width(t.getWidth()), height(t.getHeight()), index(index) {
+    init();
+}
+
+Sprite::Sprite(const Texture &t, float width, float height, int index, const Shader &s)
+    : uniqueMap(TextureMap(t)), map(&uniqueMap), program(&s), width(width), height(height), index(index){
+    init();
+}
+
 void Sprite::addUniform(std::string name) {
     locations.emplace(name,glGetUniformLocation(program->getId(),name.c_str()));
 }

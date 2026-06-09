@@ -1,45 +1,66 @@
 #include "Animation.h"
-#include <iostream>
 
 Animation::Animation()
-    : program(), map(), first(-1), last(-1), current(-1), timeStep(0.0f) {}
+    : program(), first(-1), last(-1), current(-1), timeStep(0.0f), isSprite(false) {}
 
 Animation::Animation(const TextureMap &t,float width, float height, int first, int last, float timeStep, const Shader& shader)
-    : program(&shader), map(&t), first(first), last(last), current(first), timeStep(timeStep){
-    sprite = new Sprite(*map,first,*program);
+    : program(&shader), first(first), last(last), current(first), timeStep(timeStep), isSprite(false){
+    sprite = new Sprite(t,first,*program);
+    setSize(width,height);
+}
+
+Animation::Animation(const TextureMap &t, float width, float height, int index, const Shader &shader)
+    : program(&shader), first(index), last(index), current(index), timeStep(0.0f), isSprite(true) {
+    sprite = new Sprite(t,index,shader);
+    setSize(width,height);
+}
+
+Animation::Animation(const Texture &t, float width, float height, const Shader &shader)
+    : program(&shader), first(0), last(0), current(0), timeStep(0.0f), isSprite(true){
+    sprite = new Sprite(t,*program);
+    setSize(width,height);
+}
+
+Animation::Animation(const Texture &t, float width, float height, int index, const Shader &shader)
+    : program(&shader), first(index), last(index), current(index), timeStep(0.0f), isSprite(true){
+    sprite = new Sprite(t,index,*program);
+    setSize(width,height);
+}
+
+Animation::Animation(const Texture &t, float width, float height, int first, int last, float timeStep, const Shader &s)
+    : program(&s), first(first), last(last), current(first), timeStep(timeStep), isSprite(false){
+    sprite = new Sprite(t,*program);
     setSize(width,height);
 }
 
 void Animation::draw(double deltaTime) {
-    sprite->setIndex(current);
+    if (!isSprite) sprite->setIndex(current);
+
     sprite->setOffset(offset);
     sprite->draw();
 
-    currentTime+=deltaTime;
-    if (currentTime >= timeStep) {
-        if (current >= last) current = first;
-        else current++;
-        currentTime = 0;
+    if (!isSprite) {
+        currentTime+=deltaTime;
+        if (currentTime >= timeStep) {
+            if (current >= last) current = first;
+            else current++;
+            currentTime = 0;
+        }
     }
-
-    //std::cout << sprite->getIndex() << std::endl;
-
 }
 
 Animation::Animation(Animation && other) noexcept
-    : program(other.program), map(other.map), sprite(other.sprite),
-    first(other.first), last(other.last), current(other.current),
+    : program(other.program), sprite(other.sprite),
+    first(other.first), last(other.last), current(other.current), isSprite(other.isSprite),
     timeStep(other.timeStep), currentTime(other.currentTime), offset(other.offset){
     other.sprite = nullptr;
     other.program = nullptr;
-    other.map = nullptr;
 }
 
 Animation &Animation::operator=(Animation && other) noexcept {
     if (this != &other) {
         delete sprite;
         sprite = other.sprite;
-        map = other.map;
         program = other.program;
         first = other.first;
         last = other.last;
@@ -47,8 +68,8 @@ Animation &Animation::operator=(Animation && other) noexcept {
         timeStep = other.timeStep;
         currentTime = other.currentTime;
         offset = other.offset;
+        isSprite = other.isSprite;
         other.sprite = nullptr;
-        other.map = nullptr;
         other.program = nullptr;
     }
     return *this;

@@ -1,7 +1,7 @@
 #include "Physics.h"
 #include <iostream>
 
-Collision Physics::collision(GameObject& a, GameObject& b, Collision collision) {
+void Physics::collision(GameObject& a, GameObject& b, Collision collision) {
     if (collision.collided) {
         float invMassA = a.isFixed() ? 0 : a.getBody().getInvMass();
         float invMassB = b.isFixed() ? 0 : b.getBody().getInvMass();
@@ -10,7 +10,7 @@ Collision Physics::collision(GameObject& a, GameObject& b, Collision collision) 
         Vector2 relVel = a.getTotalVelocity() - b.getTotalVelocity();
         float normalVel = Vector2::dot(relVel,collision.normal);
 
-        if (normalVel > 0) return collision;
+        if (normalVel > 0) return;
 
         float j = -(1 + restitution) * normalVel / (invMassA + invMassB);
 
@@ -33,8 +33,6 @@ Collision Physics::collision(GameObject& a, GameObject& b, Collision collision) 
         if (!a.isFixed()) a.setPosition(a.getPosition() + correction * invMassA);
         if (!b.isFixed()) b.setPosition(b.getPosition() - correction * invMassB);
     }
-
-    return collision;
 
 }
 
