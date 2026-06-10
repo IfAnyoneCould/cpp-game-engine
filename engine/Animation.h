@@ -6,7 +6,6 @@ class Animation {
     Sprite* sprite = nullptr;
     int first, last, current;
     float timeStep, currentTime = 0;
-    Vector2 offset;
     bool isSprite;
 
 public:
@@ -26,12 +25,12 @@ public:
     void draw(double deltaTime);
 
     //get and set
-    void setOffset(const Vector2& v) {offset = v;}
-    void addOffset(const Vector2& v) {offset += v;}
+    void setOffset(const Vector2& v) const {if (sprite) sprite->setOffset(v);}
+    void addOffset(const Vector2& v) const {sprite->setOffset(sprite->getOffset() + v);}
     void setSize(float width, float height) const {sprite->setSize(width,height);}
     void setCurrentFrame(int frame) { if (frame >= first && frame <= last) {current = frame;}}
     int getCurrentFrame() const {return current;}
-    const Vector2& getOffset() const {return offset;}
+    const Vector2& getOffset() const {return sprite->getOffset();}
 
 
 };

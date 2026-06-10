@@ -36,7 +36,6 @@ Animation::Animation(const Texture &t, float width, float height, int first, int
 void Animation::draw(double deltaTime) {
     if (!isSprite) sprite->setIndex(current);
 
-    sprite->setOffset(offset);
     sprite->draw();
 
     if (!isSprite) {
@@ -52,7 +51,7 @@ void Animation::draw(double deltaTime) {
 Animation::Animation(Animation && other) noexcept
     : program(other.program), sprite(other.sprite),
     first(other.first), last(other.last), current(other.current), isSprite(other.isSprite),
-    timeStep(other.timeStep), currentTime(other.currentTime), offset(other.offset){
+    timeStep(other.timeStep), currentTime(other.currentTime) {
     other.sprite = nullptr;
     other.program = nullptr;
 }
@@ -67,7 +66,6 @@ Animation &Animation::operator=(Animation && other) noexcept {
         current = other.current;
         timeStep = other.timeStep;
         currentTime = other.currentTime;
-        offset = other.offset;
         isSprite = other.isSprite;
         other.sprite = nullptr;
         other.program = nullptr;

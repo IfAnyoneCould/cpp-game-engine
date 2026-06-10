@@ -1,4 +1,6 @@
 #include "Shape.h"
+
+#include <float.h>
 #include <iostream>
 #include <map>
 #include "Geometry.h"
@@ -215,4 +217,38 @@ void Shape::draw(const Vector2& position) const {
     glUniformMatrix4fv(locations.at("model"),1,GL_FALSE,model.getM());
     glBindVertexArray(buffer.VAO);
     glDrawArrays(GL_TRIANGLES,0,triangles.size() * 3);
+}
+
+AABB Shape::getAABB() const {
+    float minX = FLT_MAX, maxX = -FLT_MAX;
+    float minY = FLT_MAX, maxY = -FLT_MAX;
+    for (const auto& v : vertices) {
+        minX = std::min(minX,v.x + offset.x);
+        maxX = std::max(maxX,v.x + offset.x);
+        minY = std::min(minY,v.y + offset.y);
+        maxY = std::max(maxY,v.y + offset.y);
+    }
+    return {minX,maxX,maxY,minY};
+}
+
+Collision Shape::intersectsAABB(const Shape &other) const {
+    AABB aAABB = getAABB();
+    AABB bAABB = other.getAABB();
+    float overlapX = std::min(aAABB.right, bAABB.right) - std::max(aAABB.left,bAABB.left);
+    float overlapY = std::min(aAABB.top, bAABB.top) - std::max(aAABB.bottom,bAABB.bottom);
+
+    if (overlapX <= 0.0f || overlapY <= 0.0f) return {};
+
+    Vector2 normal;
+    float depth;
+
+    if (overlapY < overlapX + 2.0f) {
+        normal = {0.0f, worldCenter().y > other.worldCenter().y ? 1.0f : -1.0f};
+        depth = overlapY;
+    } else {
+        normal = {worldCenter().x > other.worldCenter().x ? 1.0f : -1.0f, 0.0f};
+        depth = overlapX;
+    }
+
+    return {true,normal,depth};
 }

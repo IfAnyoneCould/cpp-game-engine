@@ -1,0 +1,4 @@
+#object(platform)#hbox(rect,50,50)#animation(single,textures/cat.png,50,50)
+#color(00FF00FF,platform)
+#image(worlds/world.png)
+#world(800,600)

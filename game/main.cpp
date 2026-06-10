@@ -4,8 +4,7 @@ Rectangle* shape;
 PlatformerController* controller;
 GameObject* a;
 
-Rectangle* rect;
-GameObject* b;
+WorldObject* world;
 
 Camera* cam;
 
@@ -18,37 +17,35 @@ const Uint8* keys;
 void start() {
     keys = Engine::getKeys();
 
-    shape = new Rectangle(200.0f,200.0f,Engine::getProgram());
+
+    shape = new Rectangle(98.0f,98.0f,Engine::getProgram());
     controller = new PlatformerController(500.0f,500.0f,keys);
     a = new GameObject(shape, 10,"hi");
     a->setKinematic(true);
     a->setPosition(Vectors::WORLD_CENTER);
     a->addController(controller);
 
-    rect = new Rectangle(Constants::WORLD_WIDTH,100,Engine::getProgram());
-    b = new GameObject(rect,"rect");
-
-
+    world = new WorldObject("worlds/world.world",Engine::getProgram());
     tex = new Texture("textures/test.png");
     //map = new TextureMap(*tex,2,2);
-    sprite = new Animation(*tex,200,200,Engine::getProgram());
+    sprite = new Animation(*tex,100,100,Engine::getProgram());
     sprite->setOffset(Vectors::WORLD_CENTER);
 
 }
 
 void update(double deltaTime) {
-
-    Collision col = Physics::collision(*a,*b);
+    a->getBody().setOnGround(false);
+    std::vector<Collision> cols = world->getCollisions(a);
     a->updateControllers(deltaTime);
-    Physics::collision(*a,*b,col);
+    world->resolveCollisions(a,cols);
     a->applyVelocity(deltaTime);
     sprite->setOffset(a->getPosition());
 
 }
 
 void render(double deltaTime) {
-
-    rect->drawWireFrame();
+    world->drawObjectsWireFrame();
+    world->drawObjects(deltaTime);
     a->getShape().drawWireFrame();
     sprite->draw(deltaTime);
 }

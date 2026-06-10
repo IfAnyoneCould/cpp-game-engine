@@ -16,13 +16,21 @@ void WorldObject::drawObjects(double deltaTime) const {
         }
     }
 }
+void WorldObject::drawObjectsWireFrame() const {
+    for (auto& [id, obj] : objects) {
+        for (auto& pos : positions.at(id)) {
+            obj.setPosition(pos);
+            obj.getShape().drawWireFrame();
+        }
+    }
+}
 
 std::vector<Collision> WorldObject::getCollisions(GameObject *other) {
     std::vector<Collision> cols;
     for (auto& [id, obj] : objects) {
         for (auto& pos : positions.at(id)) {
             obj.setPosition(pos);
-            cols.push_back(Physics::collision(*other,obj));
+            cols.push_back(Physics::collisionAABB(*other,obj));
         }
     }
     return cols;
@@ -141,8 +149,8 @@ WorldObject::WorldObject(const std::string& path, const Shader& program) {
             imagePath = keyPairs.at("image");
         }
 
-        if (keyPairs.contains("worlds")) {
-            auto vals = parseComma(keyPairs.at("worlds"));
+        if (keyPairs.contains("world")) {
+            auto vals = parseComma(keyPairs.at("world"));
             if (vals.size() == 2) {
                 worldWidth = std::stof(vals[0]);
                 worldHeight = std::stof(vals[1]);
@@ -169,7 +177,7 @@ WorldObject::WorldObject(const std::string& path, const Shader& program) {
 
     if (imagePath.has_value()) {
         if (worldWidth == -1 || worldHeight == -1) {
-            std::cout << "Error: #worlds not set\n";
+            std::cout << "Error: #world not set\n";
         }
         else loadImage(imagePath.value(),worldWidth,worldHeight);
     }

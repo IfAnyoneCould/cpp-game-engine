@@ -1,16 +1,17 @@
 #include "Rectangle.h"
 
 Rectangle::Rectangle(float width, float height, const Shader& program)
-    : Shape([&]() {
+    :Shape([&]() {
         std::vector<Triangle> tri;
         tri.push_back({{0,0},{width,0},{width,height}});
         tri.push_back({{0,0},{0,height},{width,height}});
         return tri;
-    }(),program), height(height), width(width) {genBuffer();}
+    }(),program), height(height), width(width) {genBuffer();setRect(true);}
 
 Rectangle::Rectangle(float width, float height, const Color& color, const Shader& program)
     :   Rectangle(width,height,program){
     this->color = color;
+    setRect(true);
 }
 
 Vector2 Rectangle::localCenter() const {

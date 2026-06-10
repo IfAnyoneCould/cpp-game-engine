@@ -2,6 +2,8 @@
 
 void GameObject::setPosition(const Vector2& pos) const {
     body->setPosition(pos);
+    shape->setOffset(pos);
+    if (animation) animation->setOffset(pos);
 }
 
 void GameObject::setPhysicsVelocity(const Vector2 &vel) const {
@@ -24,9 +26,9 @@ void GameObject::updateControllers(double deltaTime) const {
 }
 
 void GameObject::applyVelocity(double deltaTime) const {
-    body->setOnGround(false);
     body->applyVelocity(deltaTime);
     shape->setOffset(body->getPosition());
+    //body->setOnGround(false);
 }
 
 void GameObject::addPhysicsVelocity(const Vector2& vel) const {

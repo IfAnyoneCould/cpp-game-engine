@@ -18,6 +18,10 @@ struct Collision {
     Collision() : collided(false), normal(Vectors::ZERO), depth(0.0f) {}
 };
 
+struct AABB {
+    float left,right,top,bottom;
+};
+
 class Shape {
 protected:
     std::vector<Triangle> triangles;
@@ -30,6 +34,9 @@ protected:
     Color color = Colors::BLACK;
     const Shader* program;
     std::unordered_map<std::string,unsigned int> locations;
+    bool rect = false;
+
+    void setRect(bool r) {rect = r;}
 
 public:
     virtual ~Shape() {
@@ -43,15 +50,18 @@ public:
     Vector2 worldCenter() const;
     virtual Vector2 localCenter() const;
     Vector2 getOffset() const {return offset;};
+    bool isRect() const {return rect;}
     virtual std::vector<unsigned int> getIndices() const;
     Color getColor() const {return color;}
     std::vector<Vector2> getNormals() const;
     Vector2 project(const Vector2& axis) const;
+    AABB getAABB() const;
 
     [[nodiscard]] virtual bool contains(const Vector2& point) const;
     [[nodiscard]] bool intersectsBoundingCircle(const Shape& other) const;
     [[nodiscard]] bool intersects(const Shape& other) const;
     [[nodiscard]] Collision intersectsSAT(const Shape& other) const;
+    [[nodiscard]] Collision intersectsAABB(const Shape& other) const;
 
     void setOffset(const Vector2& pos);
     void addOffset(const Vector2& pos);

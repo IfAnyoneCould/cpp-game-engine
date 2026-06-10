@@ -22,6 +22,7 @@ public:
     WorldObject(const std::string& path, const Shader& program);
 
     void drawObjects(double deltaTime) const;
+    void drawObjectsWireFrame() const;
     std::vector<Collision> getCollisions(GameObject* other);
     void resolveCollisions(GameObject* other, const std::vector<Collision>& cols);
 };

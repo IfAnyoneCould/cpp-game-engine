@@ -7,8 +7,9 @@ void PhysicsObject::applyForces(double deltaTime) {
 }
 
 void PhysicsObject::applyVelocity(double deltaTime) {
+    if (onGround) physicsVelocity.y = 0;
     physicsVelocity += Vectors::GRAVITY * deltaTime;
-    pos+=( physicsVelocity + controllerVelocity) * deltaTime;
+    pos += (physicsVelocity + controllerVelocity) * deltaTime;
 }
 
 void PhysicsObject::setForces(const std::vector<Vector2>& otherForces) {
