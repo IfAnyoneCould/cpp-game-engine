@@ -14,6 +14,7 @@ class Sprite {
     const TextureMap* map;
     int index;
     Vector2 offset;
+    Vector2 scale;
     BufferObject buffer;
     std::array<Vector2,4> vertices = {
         Vector2(0,0),
@@ -43,8 +44,10 @@ public:
     void setOffset(const Vector2& pos) {offset = pos;}
     void setIndex(int i);
     void setSize(float width, float height);
+    void setScale(float xScale, float yScale) {scale.x = xScale; scale.y = yScale;};
     int getIndex() const {return index;}
     const TextureMap& getMap() const {return *map;}
     const Vector2& getOffset() const {return offset;}
+    const Vector2& getScale() const {return scale;}
 
 };

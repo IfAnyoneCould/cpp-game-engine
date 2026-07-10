@@ -70,7 +70,7 @@ void Sprite::draw() const {
     program->use();
 
     glUniform1i(locations.at("useTexture"),1);
-    Mat4 model = Mat4::translate(offset) * Mat4::scale({width,height});
+    Mat4 model = Mat4::translate(offset) * Mat4::scale({width * scale.x,height * scale.y});
     glUniformMatrix4fv(locations.at("model"),1,GL_FALSE,model.getM());
     glUniform1i(locations.at("tex"),0);
 

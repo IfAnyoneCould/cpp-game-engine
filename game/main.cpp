@@ -18,7 +18,7 @@ void start() {
     keys = Engine::getKeys();
 
 
-    shape = new Rectangle(98.0f,98.0f,Engine::getProgram());
+    shape = new Rectangle(100.0f,100.0f,Engine::getProgram());
     controller = new PlatformerController(500.0f,500.0f,keys);
     a = new GameObject(shape, 10,"hi");
     a->setKinematic(true);

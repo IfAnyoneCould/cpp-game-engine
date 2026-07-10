@@ -57,6 +57,10 @@ add_executable(physics game/main.cpp
         engine/TextureMap.h
         engine/Animation.cpp
         engine/Animation.h
+        engine/Font.cpp
+        engine/Font.h
+        engine/Text.cpp
+        engine/Text.h
 )
 target_include_directories(${PROJECT_NAME} PRIVATE
         C:/Users/JonahW/vcpkg/installed/x64-mingw-dynamic/include

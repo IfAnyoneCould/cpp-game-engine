@@ -28,7 +28,7 @@ void GameObject::updateControllers(double deltaTime) const {
 void GameObject::applyVelocity(double deltaTime) const {
     body->applyVelocity(deltaTime);
     shape->setOffset(body->getPosition());
-    //body->setOnGround(false);
+    if (animation) animation->setOffset(getPosition());
 }
 
 void GameObject::addPhysicsVelocity(const Vector2& vel) const {
